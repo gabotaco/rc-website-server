@@ -1,6 +1,8 @@
 import Api from './domain/Api'
 import {authenticateRoute} from './domain/auth/resolvers/authenticateResolver'
 import AppConfigs from "./configs/app_configs"
+import {sendStaffNotfication} from "./http/log"
+import {unauthorizedResponse} from "./http/standardResponses"
 
 export const routes = (db, app) => {
     const api = new Api(db, app);
@@ -13,8 +15,12 @@ export const routes = (db, app) => {
         api.Auth.logout(req, res);
     })
 
-    app.get('/manager/restart', async (req, res) => {
-        authenticateRoute({app: [AppConfigs.permissions.OWNER, AppConfigs.permissions.MANAGER]}, req, () => api.Alfred.restart(req, res))
+    app.get('/alfred/restart', async (req, res) => {
+        try {
+            authenticateRoute({app: [AppConfigs.permissions.OWNER, AppConfigs.permissions.MANAGER]}, req, () => api.Alfred.restart(req, res))
+        } catch (e) {
+            return unauthorizedResponse(res);
+        }
     })
 
     app.get('/tycoon/positions/:server', async (req, res) => {
@@ -34,15 +40,56 @@ export const routes = (db, app) => {
     })
 
     app.get("/benny/list", function (req, res) {
-        authenticateRoute({app: [AppConfigs.permissions.OWNER, AppConfigs.permissions.MANAGER, AppConfigs.permissions.MEMBER]}, req, () => api.Benny.getList(req, res))
+        try {
+            authenticateRoute({app: [AppConfigs.permissions.OWNER, AppConfigs.permissions.MANAGER, AppConfigs.permissions.MEMBER]}, req, () => api.Benny.getList(req, res))
+        } catch (e) {
+            return unauthorizedResponse(res);
+        }
     })
 
     app.get("/benny/search", function (req, res) {
-        authenticateRoute({app: [AppConfigs.permissions.OWNER, AppConfigs.permissions.MANAGER, AppConfigs.permissions.MEMBER]}, req, () => api.Benny.search(req, res))
+        try {
+            authenticateRoute({app: [AppConfigs.permissions.OWNER, AppConfigs.permissions.MANAGER, AppConfigs.permissions.MEMBER]}, req, () => api.Benny.search(req, res))
+        } catch (e) {
+            return unauthorizedResponse(res);
+        }
     })
 
     app.get("/tycoon/key", function (req, res) {
-        authenticateRoute({tt: [AppConfigs.ttpermissions.ADMIN]}, req, () => api.Tycoon.getCharges(req, res))
+        try {
+            authenticateRoute({tt: [AppConfigs.ttpermissions.ADMIN]}, req, () => api.Tycoon.getCharges(req, res))
+        } catch (e) {
+            return unauthorizedResponse(res);
+        }
+    })
+
+    app.get("/applicant/:uid/details", function (req, res) {
+        try {
+            authenticateRoute({app: [AppConfigs.permissions.OWNER, AppConfigs.permissions.MANAGER]}, req, () => api.Applications.details(req, res))
+        } catch (e) {
+            return unauthorizedResponse(res);
+        }
+    })
+
+    app.post("/member/hire", function (req, res) {
+        if (!req.user) return unauthorizedResponse(res);
+
+        if (req.user.welcome == 0 && req.user.permission == 1) {
+            res.redirect("http://secret.rockwelltransport.com")
+            return sendStaffNotfication(`This dummy ${req.user.username}#${req.user.discriminator} (<@${req.user.id}>) AKA ${req.body.name} (${req.body.member}) just tried to get back into ${req.body.company.toUpperCase()} even tho we said he wasn't allowed to.`)
+        }
+
+        if (req.user.permission < 2) {
+            if (req.user.welcome == 1 && req.user.permission == 1) {
+                req.body.discord = req.user.id;
+                req.body.name = req.user.in_game_name
+                req.body.member = req.user.in_game_id
+            } else {
+                return unauthorizedResponse(res);
+            }
+        }
+
+        api.Management.hire(req, res);
     })
 
     return app;

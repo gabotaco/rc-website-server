@@ -1,31 +1,15 @@
 import Entity from "../Entity"
-import fetch from 'node-fetch'
 import child_process from 'child_process'
+import {sendStaffNotfication} from "../../http/log"
+import fetch from 'node-fetch'
 import AppConfigs from "../../configs/app_configs"
-
 export default class Alfred extends Entity {
-    constructor(db, app) {
-        super(db, app)
+    constructor(db, app, api) {
+        super(db, app, api)
     }
 
     restart = (req, res) => {
-        const authOptions = {
-            url: AppConfigs.webhook_url,
-            form: {
-                content: `<@${req.user.id}> restarted Alfred.`
-            },
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            method: 'POST'
-        }
-
-        const params = new URLSearchParams(authOptions.form)
-        fetch(authOptions.url, {
-            headers: authOptions.headers,
-            method: authOptions.method,
-            body: params
-        })
+        sendStaffNotfication(`<@${req.user.id}> restarted Alfred.`)
     
         child_process.exec(`pm2 restart Alfred`, function (err, stdout, stderr) {
             if (err) {
@@ -35,6 +19,24 @@ export default class Alfred extends Entity {
             else {
                 this.successResponse(res)
             }
+        })
+    }
+
+    sendRejectedMessage = (member, reason) => {
+        fetch(`${AppConfigs.alfred_url}/member/message/rejected?access_token=${AppConfigs.alfred_access_token}&member=${member}&reason=${reason}`, {
+            method: 'PATCH'
+        })
+    }
+
+    sendHireMessage = (member, name) => {
+        fetch(`${AppConfigs.alfred_url}/member/message/hired?access_token=${AppConfigs.alfred_access_token}&member=${member}&name=${name}`, {
+            method: 'PATCH'
+        })
+    }
+
+    refreshRoles = (member, server) => {
+        fetch(`${AppConfigs.alfred_url}/roles/update?access_token=${AppConfigs.alfred_access_token}&member=${member}&server=${server}`, {
+            method: 'PATCH'
         })
     }
 }

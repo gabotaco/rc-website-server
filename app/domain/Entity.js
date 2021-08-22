@@ -5,11 +5,12 @@ export default class Entity {
     app
     errorResponse
     successResponse
-
-	constructor(db, app) {
+    api
+	constructor(db, app, api) {
         this.db = db
         this.app = app
         this.errorResponse = errorResponse
         this.successResponse = successResponse
+        this.api = api
 	}
 }
