@@ -6,15 +6,18 @@ import AppConfigs from "../../configs/app_configs";
 import Entity from "../Entity"
 
 export default class Auth extends Entity {
-    constructor(db, app) {
-        super(db, app)
+    constructor(db, app, api) {
+        super(db, app, api)
     }
 
     login = async (req, res) => {
         const {code} = req.query;
 
         try {
-            const access = await accessTokenResolver(code);
+            const access = await accessTokenResolver(code).catch((err) => {
+                res.redirect(AppConfigs.front_url + "/app")
+            });
+            if (!access) return;
             const discordUser = await discordResolver(access.access_token);
             const webUser = await webUserResolver(this.db, discordUser.id)
             const companyMember = await this.db.members.findOne({where: {discord_id: discordUser.id}})

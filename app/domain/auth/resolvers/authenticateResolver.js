@@ -20,25 +20,19 @@ export const authenticateResolver = (perms, next) => (root, args, context, info)
 
 export const authenticateRoute = (perms, req, next) => {
     if (!req.user) {
-        return res.status(401).send({
-            error: "Unauthorized"
-        })
+        throw new AuthenticationError(`Error: Unable to authenticate request!`)
     }
 
     if (perms) {
         if (perms.tt) {
             if (!perms.tt.includes(req.user.ttpermission)) {
-                return res.status(401).send({
-                    error: "Unauthorized"
-                })
+                throw new AuthenticationError(`Error: Unable to authenticate request!`)
             }
         }
 
         if (perms.app) {
             if (!perms.app.includes(req.user.permission)) {
-                return res.status(401).send({
-                    error: "Unauthorized"
-                })
+                throw new AuthenticationError(`Error: Unable to authenticate request!`)
             }
         }
     }

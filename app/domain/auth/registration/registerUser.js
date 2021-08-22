@@ -12,8 +12,6 @@ export const registerUser = (discordUser, webUser, companyMember, companyManager
         ...parseDiscord(discordUser),
         ...parseWebUser(webUser),
         ...parseCompanyMember(companyMember, companyManager),
-        member_id: companyMember.id,
-        manager_id: companyManager ? companyManager.id : null
     }
     const {token, expires_in} = createUserAccessToken();
 
@@ -56,12 +54,15 @@ function parseCompanyMember(companyMember, companyManager) {
     if (!companyMember) {
         return guestPerms;
     }
+
+    let perms = memberPerms;
+
     if (companyMember.discord_id == AppConfigs.CEOID || companyMember.discord_id == AppConfigs.CTOID) {
-        return ownerPerms;
+        perms = {...ownerPerms, manager_id: companyManager.id};
+    } else if (companyManager) {
+        if (companyManager.active) perms = {...managerPerms, manager_id: companyManager.id}
+        else perms = {...exManagerPerms, manager_id: companyManager.id}
     }
-    if (companyManager) {
-        if (companyManager.active) return managerPerms
-        else return exManagerPerms
-    }
-    return memberPerms
+
+    return {...perms, member_id: companyMember.id, welcome: companyMember.welcome}
 }

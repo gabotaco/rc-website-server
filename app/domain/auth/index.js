@@ -1,7 +1,7 @@
 const accessHistory = {}
 
 export const addUser = (token, expires_in, user) => {
-    accessHistory[token] = {...user, expires_at: Date.now() + expires_in};
+    accessHistory[token] = {...user, expires_at: Date.now() + expires_in * 1000};
 }
 
 export const getUser = (token) => {
