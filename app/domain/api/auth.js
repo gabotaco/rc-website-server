@@ -15,7 +15,7 @@ export default class Auth extends Entity {
 
         try {
             const access = await accessTokenResolver(code).catch((err) => {
-                res.redirect(AppConfigs.front_url + "/app")
+                res.redirect(AppConfigs.front_url + "/home")
             });
             if (!access) return;
             const discordUser = await discordResolver(access.access_token);
@@ -29,7 +29,7 @@ export default class Auth extends Entity {
                 maxAge: expires_in * 1000
             })
     
-            res.redirect(AppConfigs.front_url + "/app/profile")
+            res.redirect(AppConfigs.front_url + "/home/profile")
         } catch (err) {
             console.error(err)
             this.errorResponse(res, err)
