@@ -3,8 +3,8 @@ import sdk from "../../tycoon-sdk/TycoonSDK";
 import AppConfigs from "../../configs/app_configs"
 
 export default class Tycoon extends Entity {
-    constructor(db, app) {
-        super(db, app)
+    constructor(db, app, api) {
+        super(db, app, api)
     }
 
     getPositions = async (req, res) => {
@@ -13,7 +13,7 @@ export default class Tycoon extends Entity {
         sdk.Server.getPositions(server).then((response) => {
             this.successResponse(res, response)
         }).catch((err) => {
-            this.errorResponse(res, err)
+            this.errorResponse(res, err.message)
         })
     }
 
@@ -22,11 +22,10 @@ export default class Tycoon extends Entity {
         if (req.user.ttpermission >= AppConfigs.ttpermissions.SEARCH_OTHERS && req.query.id) {
             uid = req.query.id
         }
-
         sdk.Player.getData(uid).then((response) => {
             this.successResponse(res, response)   
         }).catch((err) => {
-            this.errorResponse(res, err)   
+            this.errorResponse(res, err.message)   
         })
     }
 
@@ -36,7 +35,7 @@ export default class Tycoon extends Entity {
         sdk.Server.getPlayers(server).then((response) => {
             this.successResponse(res, response)
         }).catch((err) => {
-            this.errorResponse(res, err)
+            this.errorResponse(res, err.message)
         })
     }
 
@@ -44,7 +43,7 @@ export default class Tycoon extends Entity {
         sdk.Utility.getCharges().then((response) => {
             this.successResponse(res, response)
         }).catch((err) => {
-            this.errorResponse(res, err)
+            this.errorResponse(res, err.message)
         })
     }
 }
