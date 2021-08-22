@@ -6,8 +6,8 @@ const {
 import AppConfigs from "../../configs/app_configs"
 
 export default class Benny extends Entity {
-    constructor(db, app) {
-        super(db, app)
+    constructor(db, app, api) {
+        super(db, app, api)
     }
 
     getList = async (req, res) => {
@@ -21,6 +21,7 @@ export default class Benny extends Entity {
                 range: "Mods List!C3:C500",
             }, (err, response) => {
                 if (err) {
+                    console.error(err);
                     return this.errorResponse(res, err)
                 }
     
@@ -56,7 +57,7 @@ export default class Benny extends Entity {
                 }
             }, (err, response) => {
                 if (err) {
-                    console.log(`The API returned an ${err}`);
+                    console.error(err);
                     return this.errorResponse(res, err);
                 } else { //no error
                     sheets.spreadsheets.values.get({ //gets the search results
@@ -64,7 +65,7 @@ export default class Benny extends Entity {
                         range: "Search Engine!E26:H35",
                     }, (err, response) => {
                         if (err) {
-                            console.log(`The API returned an ${err}`);
+                            console.error(err)
                             return this.errorResponse(res, err)
                         }
     
