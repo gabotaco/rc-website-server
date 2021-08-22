@@ -11,7 +11,8 @@ export default class Data extends Entity {
             uri: '/economy.csv',
             timeout: 2000,
             method: 'GET',
-            responseType: 'text'
+            responseType: 'text',
+            config: false
         }).then((response) => {
             const data = [];
             const lines = response.split('\n')
@@ -42,7 +43,8 @@ export default class Data extends Entity {
     getConfig = (resource) => {
         return this.makeApiRequest({
             uri: `/config/${resource}`,
-            method: 'GET'
+            method: 'GET',
+            config: false
         })
     }
 

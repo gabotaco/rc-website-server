@@ -20,7 +20,8 @@ export default class Data extends Entity {
         return this.makeApiRequest({
             uri: '/charges.json',
             timeout: 2000,
-            method: 'GET'
+            method: 'GET',
+            cache: false
         })
     }
 }

@@ -1,5 +1,7 @@
 // @flow
-import fetch from 'node-fetch'
+import { fetchBuilder, MemoryCache } from 'node-fetch-cache';
+
+const fetch = fetchBuilder.withCache(new MemoryCache({ttl: 2 * 60000}));
 
 const apiRequest = (request) => {
 	const {responseType = 'json'} = request
@@ -10,6 +12,9 @@ const apiRequest = (request) => {
 		timeout: request.timeout
 	})
 	.then((response) => {
+		if (request.cache === false) {
+			response.ejectFromCache();
+		}
 		if(response.ok) {
 			if (responseType == 'TYCOON') {
 				return response.text().then((html) => {
