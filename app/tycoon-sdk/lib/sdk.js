@@ -32,6 +32,7 @@ export default class Sdk {
 			if (!response) throw new Error("Server Offline")
 			return response;
 		}).catch((err) => {
+			if (JSON.parse(err.message).error === 'Non-existant user') return Promise.reject(err);
 			return this.allServerApiCall(request, index + 1)
 		})
 	}
