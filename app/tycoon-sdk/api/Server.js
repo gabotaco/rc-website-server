@@ -13,7 +13,8 @@ export default class Server extends Entity {
             server: server,
             uri: '/alive',
             method: 'GET',
-            cache: false
+            cache: false,
+            responseType: 'EMPTY'
         }).then(() => {
             return true;
         }).catch(() => {

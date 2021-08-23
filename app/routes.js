@@ -24,10 +24,16 @@ export const routes = (db, app) => {
     })
 
     app.get('/tycoon/positions/:server', async (req, res) => {
-        api.Tycoon.getPositions(req, res)
+        try {
+            authenticateRoute({tt: [AppConfigs.ttpermissions.ADMIN, AppConfigs.ttpermissions.SEARCH_ALL, AppConfigs.ttpermissions.SEARCH_OTHERS, AppConfigs.ttpermissions.SEE_SELF]}, req, () => api.Tycoon.getPositions(req, res))
+        } catch (e) {
+            return unauthorizedResponse(res)
+        }
     })
 
     app.get('/tycoon/data', async (req, res) => {
+        if (!req.user || !req.user.in_game_id) return unauthorizedResponse(res);
+
         api.Tycoon.getData(req, res)
     })
 

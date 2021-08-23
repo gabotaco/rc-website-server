@@ -1,5 +1,3 @@
-// @flow
-
 import apiRequest from "./apiRequest"
 
 export default class Sdk {
@@ -9,47 +7,44 @@ export default class Sdk {
 		this.configs = configs
 	}
 
-	setConfigs = (configs) => {
-		this.configs = configs
-	}
-
-	buildResponseObj = (response, responseType) => {
-		return responseType === 'json'
-			? response
-			: {[responseType]: response}
-	}
-
 	buildUrl = (request) => {
 		let url = `https://${request.server}/status${request.uri}`
 
 		return url
 	}
 
-	allServerApiCall = (request, index) => {
-		if (index >= this.configs.server_order.length) return Promise.reject(new Error("Tycoon Servers Offline"))
-		request.server = this.configs.server_order[index]
-		return this.apiCall(request).then((response) => {
-			if (!response) throw new Error("Server Offline")
-			return response;
-		}).catch((err) => {
-			if (JSON.parse(err.message).error === 'Non-existant user') return Promise.reject(err);
-			return this.allServerApiCall(request, index + 1)
-		})
+	allServerApiCall = (request) => {
+		const serverPromises = this.configs.server_order.map(server => {
+			return this.apiCall({
+				server: server,
+				uri: '/alive',
+				method: 'GET',
+				cache: false,
+				responseType: 'EMPTY'
+			}).then(() => {
+				return server
+			})
+		});
+
+		return Promise.any(serverPromises).then((server) => {
+			return this.apiCall({...request, server: server})
+		}).catch(() => {throw new Error("Tycoon Servers Offline")})
 	}
 
 	apiCall = (request) => {
 		if (!request.server) {
-			return this.allServerApiCall(request, 0);
+			return this.allServerApiCall(request);
 		}
 
 		const url = this.buildUrl(request)
 
 		return apiRequest({
-			url:  url,
-			method: request.method,
+			url: url,
+			method: request.method || 'GET',
 			headers: this.getDefaultHeaders(),
 			body: request.body,
-			timeout: request.timeout || 10000
+			timeout: request.timeout || 10000,
+			responseType: request.responseType || 'json'
 		})
 	}
 
