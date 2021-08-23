@@ -50,6 +50,7 @@ module.exports = (sequelize, DataTypes) => {
     Manager.associate = (models) => {
         Manager.hasOne(models.members, {
             foreignKey: 'id',
+            sourceKey: 'member_id',
             as: 'member'
         })
 
