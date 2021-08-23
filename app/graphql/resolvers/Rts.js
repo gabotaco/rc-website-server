@@ -1,9 +1,8 @@
 import {gql} from "apollo-server-express";
-import {authenticateResolver} from "../../domain/auth/resolvers/authenticateResolver";
 
 export const typeDef = gql`
     type RtsCashout {
-        id: ID!
+        id: Int!
         member_id: Int!
         vouchers: Int!
         worth: Int!

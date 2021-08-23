@@ -6,7 +6,7 @@ import AppConfigs from "../../configs/app_configs"
 
 export const typeDef = gql`
     type Member {
-        id: ID!
+        id: Int!
         discord_id: String!
         in_game_name: String!
         in_game_id: Int!

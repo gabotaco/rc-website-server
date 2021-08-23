@@ -4,7 +4,7 @@ import AppConfigs from "../../configs/app_configs"
 
 export const typeDef = gql`
     type WebsiteUser {
-        id: ID!
+        id: Int!
         discord_id: String!
         in_game_id: Int!
         permission: Int!

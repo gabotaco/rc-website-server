@@ -4,7 +4,7 @@ import AppConfigs from "../../configs/app_configs"
 
 export const typeDef = gql`
     type PigsCashout {
-        id: ID!
+        id: Int!
         member_id: Int!
         vouchers: Int
         worth: Int!

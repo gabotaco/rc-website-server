@@ -6,7 +6,7 @@ import {setApplicantContacted, setApplicantRejected, updateApplicantStatusInfo} 
 
 export const typeDef = gql`
     type Application {
-        id: ID!
+        id: Int!
         discord_id: String!
         in_game_name: String!
         in_game_id: Int!
