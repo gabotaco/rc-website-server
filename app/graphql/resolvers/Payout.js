@@ -4,7 +4,7 @@ import AppConfigs from "../../configs/app_configs"
 
 export const typeDef = gql`
     type Payout {
-        id: ID!
+        id: Int!
         manager_id: Int!
         member_id: Int!
         company: String!
@@ -15,7 +15,7 @@ export const typeDef = gql`
     }
 
     type PayoutInfo {
-        id: ID!
+        id: Int!
         manager_id: Int!
         member_id: Int!
         company: String!
@@ -26,10 +26,23 @@ export const typeDef = gql`
         member: Member!
         manager: ManagerInfo!
     }
+
+    type SimplePayout {
+        id: Int!
+        manager_id: Int!
+        member_id: Int!
+        company: String!
+        amount: Int!
+        worth: Int!
+        updatedAt: Date!
+        createdAt: Date!
+        member: Member!
+    }
     
     extend type Query {
         getAuthUserTurnins: [PayoutInfo]!
         getAuthUserPayouts: [PayoutInfo]!
+        getManagerPayouts(manager_id: Int!): [SimplePayout]!
     }
 `
 
@@ -42,7 +55,11 @@ const PayoutsResolvers = {
         getAuthUserPayouts: authenticateResolver({app: [AppConfigs.permissions.OWNER,AppConfigs.permissions.MANAGER]}, (parent, args, {db, user}, info) => db.payout.findAll({ 
             include: {all: true, nested: true },
             where: {manager_id: user.manager_id}})
-        )
+        ),
+        getManagerPayouts: authenticateResolver({app: [AppConfigs.permissions.OWNER]}, (parent, {manager_id}, {db}, info) => db.payout.findAll({ 
+            include: [ {model: db.members, as: "member" }],
+            where: {manager_id: manager_id}})
+        ),
     }
 }
 
