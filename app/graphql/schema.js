@@ -22,6 +22,7 @@ const Mutation = gql`
 `
 export const typeDefs = gql`
     scalar Date,
+    scalar JSON,
     ${Query},
     ${Mutation},
     ${ApplicationType},
