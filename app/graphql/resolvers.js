@@ -21,6 +21,18 @@ export default combineResolvers([
 			}
 		})
 	},
+	{
+		JSON: new GraphQLScalarType({
+			name: "JSON",
+			parseValue(value) {
+				return JSON.parse(value)
+			},
+			serialize(value) {
+				if (typeof value === 'object') return value
+				return JSON.stringify(value)
+			}
+		})
+	},
 	ApplicationsResolvers,
 	ManagersResolvers,
 	MembersResolvers,
