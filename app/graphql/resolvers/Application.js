@@ -3,7 +3,7 @@ import {authenticateResolver} from "../../domain/auth/resolvers/authenticateReso
 import {getActiveApplicants} from "./ApplicationQueries/GetActiveApplicants"
 import AppConfigs from "../../configs/app_configs"
 import {setApplicantContacted, setApplicantRejected, updateApplicantStatusInfo} from "./ApplicationQueries/SetApplicantStatus"
-import { CompletedReferralsType, getCompletedReferrals, getReferralDetails, markRefAsPaid, getActiveReferrals, changeRefID } from "./ApplicationQueries/Referrals";
+import { CompletedReferralsType, getCompletedReferrals, getReferralDetails, markRefAsPaid, getActiveReferrals, changeRefID, getAuthUserActiveReferrals } from "./ApplicationQueries/Referrals";
 
 export const typeDef = gql`
     type Application {
@@ -43,13 +43,21 @@ export const typeDef = gql`
         re_in_game_id: Int!
         re_discord_id: String!
     }
+
+    type BasicActiveReferralDetails {
+        app_id: Int!
+        employee_name: String!
+        employee_id: Int!
+        total_vouchers: Int!
+    }
     
     extend type Query {
         getAuthUserStatus: Application,
         getActiveApplicants: [Application]!,
         getCompletedReferrals: CompletedReferrals!,
         getReferralDetails(referred_id: Int!, paid: String!): [ReferralDetails]!,
-        getActiveReferrals: [ActiveReferralDetails]!
+        getActiveReferrals: [ActiveReferralDetails]!,
+        getAuthUserActiveReferrals: [ActiveReferralDetails]!
     }
 
     extend type Mutation {
@@ -68,6 +76,7 @@ const ApplicationsResolvers = {
         getCompletedReferrals: authenticateResolver({app: [AppConfigs.permissions.OWNER]}, (parent, args, {db}, info) => getCompletedReferrals(db)),
         getReferralDetails: authenticateResolver({app: [AppConfigs.permissions.OWNER]}, (parent, {referred_id, paid}, {db}, info) => getReferralDetails(db, referred_id, paid)),
         getActiveReferrals: authenticateResolver({app: [AppConfigs.permissions.OWNER,AppConfigs.permissions.MANAGER]}, (parent, args, {db}, info) => getActiveReferrals(db)),
+        getAuthUserActiveReferrals: authenticateResolver({app: [AppConfigs.permissions.OWNER,AppConfigs.permissions.MANAGER,AppConfigs.permissions.MEMBER]}, (parent, args, {db, user}, info) => getAuthUserActiveReferrals(db, user)),
     },
     Mutation: {
         set_applicant_contacted: authenticateResolver({app: [AppConfigs.permissions.OWNER,AppConfigs.permissions.MANAGER]}, (parent, {id}, {db, user}, info) => setApplicantContacted(db, user, id)),
