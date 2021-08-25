@@ -82,3 +82,22 @@ export const markRefAsPaid = (db, referred_id) => {
         return false
     })
 }
+
+export const getActiveReferrals = (db) => {
+    return db.sequelize.query(`SELECT applications.id AS app_id, ap.in_game_name AS employee_name, ap.in_game_id AS employee_id, pigs.vouchers + rts.vouchers AS total_vouchers, re.in_game_name AS re_name, re.in_game_id AS re_in_game_id, re.discord_id AS re_discord_id FROM applications, members AS ap, members AS re, pigs, rts WHERE applications.paid != '1' AND applications.status = 'Hired' AND ap.company != 'fired' AND rts.vouchers + pigs.vouchers < 10000 AND applications.referred_id = re.in_game_id AND applications.in_game_id = ap.in_game_id AND pigs.member_id = ap.id AND rts.member_id = ap.id`, {
+        type: QueryTypes.SELECT
+    })
+}
+
+export const changeRefID = (db, app_id, new_id) => {
+    return db.sequelize.query(`UPDATE applications SET referred_id = $new_id WHERE id = $app_id`, {
+        type: QueryTypes.UPDATE,
+        bind: {
+            new_id: new_id.toString(),
+            app_id: app_id.toString()
+        }
+    }).then((result) => {
+        if (result[1] > 0) return true
+        return false
+    })
+}
