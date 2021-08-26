@@ -114,5 +114,13 @@ export const routes = (db, app) => {
         }
     })
 
+    app.get("/payout/calculate", function (req, res) {
+        try {
+            authenticateRoute({app: [AppConfigs.permissions.OWNER, AppConfigs.permissions.MANAGER, AppConfigs.permissions.MEMBER]}, req, () => api.Payout.getDetails(req, res))
+        } catch (e) {
+            return unauthorizedResponse(res)
+        }
+    })
+
     return app;
 }
