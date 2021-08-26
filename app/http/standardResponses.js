@@ -1,7 +1,7 @@
 
 export const errorResponse = (res, body = null) => {
     return res.status(400).send( body === null ? {
-        error: "Unable to authenticate user"
+        error: "Invalid params"
     } : body)
 }
 
