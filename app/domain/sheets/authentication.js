@@ -56,7 +56,7 @@ class Authentication {
         rl.close();
         oauth2Client.getToken(code, (err, token) => { //use code to get token
           if (err) {
-            console.log('Error while trying to retrieve access token', err);
+            console.error('Error while trying to retrieve access token', err);
             reject();
           }
           oauth2Client.credentials = token; //set token
@@ -76,7 +76,7 @@ class Authentication {
       }
     }
     fs.writeFile(TOKEN_PATH, JSON.stringify(token), function (err) {
-      if (err) console.log(err)
+      if (err) console.error(err)
     }); //write file
     console.log('Token stored to ' + TOKEN_PATH);
   }
