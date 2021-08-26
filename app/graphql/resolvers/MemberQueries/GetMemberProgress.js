@@ -14,7 +14,6 @@ export const MemberProgressType = `
 `
 
 function sortPigs(a, b) {
-    if (!a.pigs || !b.pigs) console.log(a, b);
     if (a.pigs.vouchers == b.pigs.vouchers) {
         return 0;
     } else {
