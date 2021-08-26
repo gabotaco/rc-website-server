@@ -57,9 +57,7 @@ export default class Management extends Entity {
                         this.successResponse(res)
 
                         t.commit();
-                        console.log("COMMIT");
                     }).catch((err) => {
-                        console.log("ROLLBACK");
                         t.rollback();
                         console.error(err);
                         this.errorResponse(res, err)
