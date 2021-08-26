@@ -98,5 +98,21 @@ export const routes = (db, app) => {
         api.Management.hire(req, res);
     })
 
+    app.post("/payout/calculate", function (req, res) {
+        try {
+            authenticateRoute({app: [AppConfigs.permissions.OWNER, AppConfigs.permissions.MANAGER]}, req, () => api.Payout.calculate(req, res))
+        } catch (e) {
+            return unauthorizedResponse(res);
+        }
+    })
+
+    app.post("/payout/confirm", function (req, res) {
+        try {
+            authenticateRoute({app: [AppConfigs.permissions.OWNER, AppConfigs.permissions.MANAGER]}, req, () => api.Payout.confirm(req, res))
+        } catch (e) {
+            return unauthorizedResponse(res);
+        }
+    })
+
     return app;
 }

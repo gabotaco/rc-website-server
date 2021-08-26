@@ -5,6 +5,7 @@ import Troll from "./api/troll"
 import Benny from "./api/benny"
 import Applications from "./api/applications"
 import Management from "./api/management"
+import Payout from './api/payout'
 
 export default class Api {
     Auth
@@ -14,6 +15,7 @@ export default class Api {
     Benny
     Applications
     Management
+    Payout
     constructor(db, app) {
         this.Auth = new Auth(db, app, this)
         this.Alfred = new Alfred(db, app, this)
@@ -22,5 +24,6 @@ export default class Api {
         this.Benny = new Benny(db, app, this)
         this.Applications = new Applications(db, app, this)
         this.Management = new Management(db, app, this)
+        this.Payout = new Payout(db, app, this)
     }
 }

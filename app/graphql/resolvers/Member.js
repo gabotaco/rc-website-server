@@ -3,6 +3,7 @@ import {authenticateResolver} from "../../domain/auth/resolvers/authenticateReso
 import {CompanyMembersType, getAllMembers} from "./MemberQueries/GetAllMembers"
 import {MemberProgressType, getMemberProgress} from "./MemberQueries/GetMemberProgress"
 import AppConfigs from "../../configs/app_configs"
+import { Op } from "sequelize";
 
 export const typeDef = gql`
     type Member {
@@ -27,12 +28,14 @@ export const typeDef = gql`
     extend type Query {
         getAllMembers: CompanyMembers!
         getAuthUserProgress: MemberProgress!
+        getCurrentEmployees: [Member]!
     }
 `
 
 const MembersResolvers = {
     Query: {
         getAllMembers: (parent, args, {db}, info) => getAllMembers(parent, args, {db}),
+        getCurrentEmployees: authenticateResolver({app: [AppConfigs.permissions.OWNER,AppConfigs.permissions.MANAGER]}, (parent, args, {db}, info) => db.members.findAll({where: {company: { [Op.ne]: 'fired' }}})),
         getAuthUserProgress: authenticateResolver({app: [AppConfigs.permissions.OWNER,AppConfigs.permissions.MANAGER,AppConfigs.permissions.MEMBER]}, (parent, args, {db, user}, info) => getMemberProgress(parent, args, {db, user}))
     }
 }
