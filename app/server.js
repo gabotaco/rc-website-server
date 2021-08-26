@@ -10,10 +10,15 @@ import resolvers from "./graphql/resolvers"
 import {getUser} from "./domain/auth/index"
 import AppConfigs from "./configs/app_configs"
 
+const corsOptions = {
+    origin: AppConfigs.front_url,
+    credentials: true
+}
+
 let app = express();
 app.use(express.json())
 app.use(helmet())
-app.use(cors({origin: AppConfigs.front_url, credentials: true}))
+app.use(cors(corsOptions))
 app.use(cookieParser())
 
 app.use("/", (req, res, next) => {
@@ -37,7 +42,7 @@ const server = new ApolloServer({
 server.start().then(() => {
     server.applyMiddleware({
         app,
-        cors: false  // set cors false so that we can set them ourselves earlier.
+        cors: corsOptions
     })  
 
     app.use(express.static("public"))
