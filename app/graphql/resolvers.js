@@ -3,6 +3,7 @@ import ApplicationsResolvers from './resolvers/Application'
 import ManagersResolvers from './resolvers/Manager'
 import MembersResolvers from './resolvers/Member'
 import PayoutsResolvers from './resolvers/Payout'
+import CompanyResolvers from './resolvers/Company'
 import PigsCashoutResolvers from './resolvers/Pigs'
 import RtsCashoutResolvers from './resolvers/Rts'
 import WebsiteCashoutResolvers from './resolvers/Website'
@@ -40,5 +41,6 @@ export default combineResolvers([
 	PigsCashoutResolvers,
 	RtsCashoutResolvers,
 	WebsiteCashoutResolvers,
-	AuthResolvers
+	AuthResolvers,
+	CompanyResolvers
 ])

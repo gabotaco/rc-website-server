@@ -1,11 +1,12 @@
 import {typeDef as ApplicationType} from './resolvers/Application'
+import {typeDef as AuthType} from './resolvers/Auth'
+import {typeDef as CompanyType} from './resolvers/Company'
 import {typeDef as ManagerType} from './resolvers/Manager'
 import {typeDef as MemberType} from './resolvers/Member'
 import {typeDef as PayoutType} from './resolvers/Payout'
 import {typeDef as PigsType} from './resolvers/Pigs'
 import {typeDef as RtsType} from './resolvers/Rts'
 import {typeDef as WebsiteType} from './resolvers/Website'
-import {typeDef as AuthType} from './resolvers/Auth'
 import {gql} from "apollo-server-express";
 
 // graphql won't allow an empty type, so we give it a single empty param
@@ -26,6 +27,7 @@ export const typeDefs = gql`
     ${Query},
     ${Mutation},
     ${ApplicationType},
+    ${CompanyType},
     ${ManagerType},
     ${MemberType},
     ${PayoutType},

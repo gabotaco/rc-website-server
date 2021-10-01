@@ -33,13 +33,16 @@ module.exports = (sequelize, DataTypes) => {
     );
 
     Payout.associate = (models) => {
-        Payout.belongsTo(models.members, {
-            foreignKey: 'member_id',
-            as: 'member'
-        })
-        Payout.belongsTo(models.managers, {
-            foreignKey: 'manager_id',
+        Payout.hasOne(models.managers, {
+            foreignKey: 'id',
+            sourceKey: 'manager_id',
             as: 'manager'
+        })
+
+        Payout.hasOne(models.members, {
+            foreignKey: 'id',
+            sourceKey: 'member_id',
+            as: 'member'
         })
     }
 

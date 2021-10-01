@@ -51,11 +51,6 @@ module.exports = (sequelize, DataTypes) => {
     );
 
     Member.associate = (models) => {
-        Member.hasMany(models.payout, {
-            foreignKey: 'member_id',
-            as: 'payouts'
-        })
-
         Member.hasOne(models.pigs, {
             foreignKey: 'member_id',
             as: 'pigs',

@@ -53,10 +53,6 @@ module.exports = (sequelize, DataTypes) => {
             sourceKey: 'member_id',
             as: 'member'
         })
-
-        Manager.hasMany(models.payout, {
-            foreignKey: 'manager_id',
-        })
     }
 
     return Manager;
