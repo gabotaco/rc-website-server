@@ -91,4 +91,41 @@ export default class Management extends Entity {
             this.errorResponse(res, err)
         })
     }
+
+    pay = async (req, res) => {
+        this.db.managers.findByPk(req.body.manager, {include: {model: this.db.members, as: 'member' }}).then(async (manager) => {
+            if (!manager) {
+                return this.errorResponse(res, "Invalid Manager")
+            }
+
+            if (req.body.company == 'both') {
+                manager.total_money += Math.floor(((manager.rts_cashout * 10000) - manager.rts_cashout_worth) * 0.5) + Math.floor(((manager.pigs_cashout * 10000) - manager.pigs_cashout_worth) * 0.5);
+                manager.rts_cashout = 0;
+                manager.rts_cashout_worth = 0;
+                manager.pigs_cashout = 0;
+                manager.pigs_cashout_worth = 0;
+                manager.save();
+                sendStaffNotfication(`<@${manager.member.discord_id}>, you have been paid by Rock for **both** companies!`);
+            } else if (req.body.company == 'rts') {
+                manager.total_money += Math.floor(((manager.rts_cashout * 10000) - manager.rts_cashout_worth) * 0.5);
+                manager.rts_cashout = 0;
+                manager.rts_cashout_worth = 0;
+                manager.save();
+                sendStaffNotfication(`<@${manager.member.discord_id}>, you have been paid by Rock for **RTS**!`);
+            } else if (req.body.company == 'pigs') {
+                manager.total_money += Math.floor(((manager.pigs_cashout * 10000) - manager.pigs_cashout_worth) * 0.5);
+                manager.pigs_cashout = 0;
+                manager.pigs_cashout_worth = 0;
+                manager.save();
+                sendStaffNotfication(`<@${manager.member.discord_id}>, you have been paid by Rock for **PIGS**!`);
+            } else {
+                return this.errorResponse(res, "Invalid company")
+            }
+
+            this.successResponse(res);
+        }).catch((err) => {
+            console.error(err);
+            this.errorResponse(res, err)
+        })
+    }
 }

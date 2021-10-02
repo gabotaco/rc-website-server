@@ -122,5 +122,13 @@ export const routes = (db, app) => {
         }
     })
 
+    app.patch("/manager/pay", function (req, res) {
+        try {
+            authenticateRoute({app: [AppConfigs.permissions.OWNER]}, req, () => api.Management.pay(req, res))
+        } catch (e) {
+            return unauthorizedResponse(res)
+        }
+    })
+
     return app;
 }

@@ -7,10 +7,10 @@ export const typeDef = gql`
         id: Int!
         member_id: Int!
         rts_cashout: Int!
-        rts_cashout_worth: Int!
+        rts_cashout_worth: Float!
         pigs_cashout: Int!
-        pigs_cashout_worth: Int!
-        total_money: Int!
+        pigs_cashout_worth: Float!
+        total_money: Float!
         active: Boolean!
         updatedAt: Date!
         createdAt: Date!
@@ -20,10 +20,10 @@ export const typeDef = gql`
         id: Int!
         member_id: Int!
         rts_cashout: Int!
-        rts_cashout_worth: Int!
+        rts_cashout_worth: Float!
         pigs_cashout: Int!
-        pigs_cashout_worth: Int!
-        total_money: Int!
+        pigs_cashout_worth: Float!
+        total_money: Float!
         active: Boolean!
         updatedAt: Date!
         createdAt: Date!
@@ -33,6 +33,7 @@ export const typeDef = gql`
     extend type Query {
         getAuthUserCashout: Manager!,
         getActiveManagers: [ManagerInfo]!
+        getAllManagers: [ManagerInfo]!
     }
 `
 
@@ -43,6 +44,10 @@ const ManagersResolvers = {
             include: [{ model: db.members, as: 'member' }],
             where: {active: true}})
         ),
+        getAllManagers: authenticateResolver({app: [AppConfigs.permissions.OWNER]}, (parent, args, {db}, info) => db.managers.findAll({ 
+            include: [{ model: db.members, as: 'member' }],
+            })
+        )
     }
 }
 
