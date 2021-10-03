@@ -43,6 +43,7 @@ export const typeDef = gql`
         getAuthUserTurnins: [PayoutInfo]!
         getAuthUserPayouts: [PayoutInfo]!
         getManagerPayouts(manager_id: Int!): [SimplePayout]!
+        getMemberPayouts(member_id: Int!): [PayoutInfo]!
     }
 `
 
@@ -59,6 +60,10 @@ const PayoutsResolvers = {
         getManagerPayouts: authenticateResolver({app: [AppConfigs.permissions.OWNER]}, (parent, {manager_id}, {db}, info) => db.payout.findAll({ 
             include: [ {model: db.members, as: "member" }],
             where: {manager_id: manager_id}})
+        ),
+        getMemberPayouts: authenticateResolver({app: [AppConfigs.permissions.OWNER,AppConfigs.permissions.MANAGER]}, (parent, {member_id}, {db}, info) => db.payout.findAll({ 
+            include: {all: true, nested: true },
+            where: {member_id: member_id}})
         ),
     }
 }
