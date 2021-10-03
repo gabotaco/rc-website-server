@@ -99,14 +99,13 @@ export const getAuthUserActiveReferrals = (db, user) => {
 }
 
 export const changeRefID = (db, app_id, new_id) => {
-    return db.sequelize.query(`UPDATE applications SET referred_id = $new_id WHERE id = $app_id`, {
-        type: QueryTypes.UPDATE,
-        bind: {
-            new_id: new_id.toString(),
-            app_id: app_id.toString()
+    return db.applications.findByPk(app_id).then((app) => {
+        app.referred_id = new_id
+        app.save()
+
+        return {
+            id: app.id,
+            referred_id: app.referred_id
         }
-    }).then((result) => {
-        if (result[1] > 0) return true
-        return false
     })
 }

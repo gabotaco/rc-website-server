@@ -65,7 +65,7 @@ export const typeDef = gql`
         set_applicant_rejected(id: Int!, reason: String!): Boolean,
         update_applicant_status_info(id: Int!, status_info: String!): String,
         set_ref_paid(id: Int!): Boolean,
-        set_referrer_id(app_id: Int!, new_id: Int!): Boolean
+        set_referrer_id(app_id: Int!, new_id: Int!): Application
     }
 `
 

@@ -42,7 +42,7 @@ export const typeDef = gql`
     }
 
     extend type Mutation {
-        set_member_identifiers(uid: Int!, new_name: String!, new_id: Int!, new_discord: String!): Boolean!
+        set_member_identifiers(uid: Int!, new_name: String!, new_id: Int!, new_discord: String!): CompanyMemberDetail!
         set_member_manager(uid: Int!, manager: Boolean!): CompanyMemberDetail!
         set_member_company(uid: Int!, company: String!): CompanyMemberDetail!
         fire_member(uid: Int!, reason: String!, welcome: Boolean!): CompanyMemberDetail!
