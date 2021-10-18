@@ -29,6 +29,19 @@ export default class Tycoon extends Entity {
         })
     }
 
+    getBiz = async (req, res) => {
+        let uid = req.user.in_game_id;
+        if (req.user.ttpermission >= AppConfigs.ttpermissions.SEARCH_OTHERS && req.query.id) {
+            uid = req.query.id
+        }
+
+        sdk.Player.getUserBiz(uid).then((response) => {
+            this.successResponse(res, response)   
+        }).catch((err) => {
+            this.errorResponse(res, err.message)   
+        })
+    }
+
     getPlayers = async (req, res) => {
         const server = req.params.server;
 
