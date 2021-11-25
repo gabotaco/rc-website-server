@@ -12,7 +12,7 @@ export default class Data extends Entity {
             timeout: 2000,
             method: 'GET',
             responseType: 'text',
-            config: false
+            cache: 'OFF'
         }).then((response) => {
             const data = [];
             const lines = response.split('\n')
@@ -36,7 +36,8 @@ export default class Data extends Entity {
     getTop10 = (stat) => {
         return this.makeApiRequest({
             uri: `/top10/${stat}`,
-            method: 'GET'
+            method: 'GET',
+            cache: 'SHORT'
         })
     }
 
@@ -44,14 +45,15 @@ export default class Data extends Entity {
         return this.makeApiRequest({
             uri: `/config/${resource}`,
             method: 'GET',
-            config: false
+            cache: 'OFF'
         })
     }
 
     getSkillRotation = () => {
         return this.makeApiRequest({
             uri: `/skillrotation.json`,
-            method: 'GET'
+            method: 'GET',
+            cache: 'LONG'
         })
     }
 }

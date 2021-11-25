@@ -13,7 +13,7 @@ export default class Server extends Entity {
             server: server,
             uri: '/alive',
             method: 'GET',
-            cache: false,
+            cache: 'OFF',
             responseType: 'EMPTY'
         }).then(() => {
             return true;
@@ -26,7 +26,8 @@ export default class Server extends Entity {
         return this.makeApiRequest({
             server: server,
             uri: '/weather.json',
-            method: 'GET'
+            method: 'GET',
+            cache: 'SHORT'
         })
     }
 
@@ -34,7 +35,8 @@ export default class Server extends Entity {
         return this.makeApiRequest({
             server: server,
             uri: '/airline.json',
-            method: 'GET'
+            method: 'GET',
+            cache: 'SHORT'
         })
     }
 
@@ -43,7 +45,8 @@ export default class Server extends Entity {
             server: server,
             uri: '/map/positions.json',
             timeout: 2000,
-            method: 'GET'
+            method: 'GET',
+            cache: 'SHORT'
         })
     }
 
@@ -52,7 +55,7 @@ export default class Server extends Entity {
             server: server,
             uri: '/players.json',
             method: 'GET',
-            cache: false
+            cache: 'OFF'
         })
     }
 
@@ -64,7 +67,7 @@ export default class Server extends Entity {
             uri: '/widget/players.json',
             method: 'GET',
             timeout: 2000,
-            cache: false
+            cache: 'OFF'
         })
     }
 }

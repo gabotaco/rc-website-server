@@ -44,7 +44,8 @@ export default class Sdk {
 			headers: this.getDefaultHeaders(),
 			body: request.body,
 			timeout: request.timeout || 10000,
-			responseType: request.responseType || 'json'
+			responseType: request.responseType || 'json',
+			cache: request.cache || 'SHORT'
 		})
 	}
 

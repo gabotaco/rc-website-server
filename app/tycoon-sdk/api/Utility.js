@@ -9,7 +9,8 @@ export default class Data extends Entity {
     snowflake2user = (discord_id) => {
         return this.makeApiRequest({
             uri: `/snowflake2user/${discord_id}`,
-            method: 'GET'
+            method: 'GET',
+            cache: 'SHORT'
         }).then((response) => {
             if (response.user_id) return response.user_id
             return null;
@@ -21,7 +22,7 @@ export default class Data extends Entity {
             uri: '/charges.json',
             timeout: 2000,
             method: 'GET',
-            cache: false
+            cache: 'OFF'
         })
     }
 }

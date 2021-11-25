@@ -9,21 +9,24 @@ export default class Player extends Entity {
     getUserBiz = (uid) => {
         return this.makeApiRequest({
             uri: `/getuserbiz/${uid}`,
-            method: 'GET'
+            method: 'GET',
+            cache: 'SHORT'
         })
     }
 
     getOwnedVehicles = (uid) => {
         return this.makeApiRequest({
             uri: `/ownedvehicles/${uid}`,
-            method: 'GET'
+            method: 'GET',
+            cache: 'SHORT'
         })
     }
 
     getDataBasic = (uid) => {
         return this.makeApiRequest({
             uri: `/data/${uid}`,
-            method: 'GET'
+            method: 'GET',
+            cache: 'SHORT'
         })
     }
 
@@ -31,20 +34,23 @@ export default class Player extends Entity {
         return this.makeApiRequest({
             uri: `/dataadv/${uid}`,
             method: 'GET',
+            cache: 'SHORT'
         })
     }
 
     getWealth = (uid) => {
         return this.makeApiRequest({
             uri: `/wealth/${uid}`,
-            method: 'GET'
+            method: 'GET',
+            cache: 'SHORT'
         })
     }
 
     getStorage = (storageid) => {
         return this.makeApiRequest({
             uri: `/chest/${storageid}`,
-            method: 'GET'
+            method: 'GET',
+            cache: 'LONG'
         })
     }
 }
