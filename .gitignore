@@ -1,5 +1,4 @@
 package-lock.json
-migrate.sql
 dev.sql
 .env
 .babelrc
