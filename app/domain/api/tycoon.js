@@ -29,6 +29,30 @@ export default class Tycoon extends Entity {
         })
     }
 
+    getFaq = async (req, res) => {
+        let uid = req.user.in_game_id;
+        if (req.user.ttpermission >= AppConfigs.ttpermissions.SEARCH_OTHERS && req.query.id) {
+            uid = req.query.id
+        }
+        sdk.Player.getUserFaq(uid).then((response) => {
+            this.successResponse(res, response)   
+        }).catch((err) => {
+            this.errorResponse(res, err.message)   
+        })
+    }
+
+    getVehicles = async (req, res) => {
+        let uid = req.user.in_game_id;
+        if (req.user.ttpermission >= AppConfigs.ttpermissions.SEARCH_OTHERS && req.query.id) {
+            uid = req.query.id
+        }
+        sdk.Player.getOwnedVehicles(uid).then((response) => {
+            this.successResponse(res, response)   
+        }).catch((err) => {
+            this.errorResponse(res, err.message)   
+        })
+    }
+
     getBiz = async (req, res) => {
         let uid = req.user.in_game_id;
         if (req.user.ttpermission >= AppConfigs.ttpermissions.SEARCH_OTHERS && req.query.id) {

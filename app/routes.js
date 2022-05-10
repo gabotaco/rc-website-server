@@ -43,6 +43,18 @@ export const routes = (db, app) => {
         api.Tycoon.getBiz(req, res)
     })
 
+    app.get('/tycoon/faq', async (req, res) => {
+        if (!req.user || !req.user.in_game_id) return unauthorizedResponse(res);
+
+        api.Tycoon.getFaq(req, res)
+    })
+
+    app.get('/tycoon/vehicles', async (req, res) => {
+        if (!req.user || !req.user.in_game_id) return unauthorizedResponse(res);
+
+        api.Tycoon.getVehicles(req, res);
+    })
+
     app.get('/tycoon/players/:server', async (req, res) => {
         api.Tycoon.getPlayers(req, res)
     })

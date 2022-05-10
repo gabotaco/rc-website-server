@@ -14,6 +14,14 @@ export default class Player extends Entity {
         })
     }
 
+    getUserFaq = (uid) => {
+        return this.makeApiRequest({
+            uri: `/getuserfaq/${uid}`,
+            method: 'GET',
+            chache: 'SHORT'
+        })
+    }
+
     getOwnedVehicles = (uid) => {
         return this.makeApiRequest({
             uri: `/ownedvehicles/${uid}`,
