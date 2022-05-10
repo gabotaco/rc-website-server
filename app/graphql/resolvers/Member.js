@@ -3,7 +3,7 @@ import {authenticateResolver} from "../../domain/auth/resolvers/authenticateReso
 import {CompanyMembersType, getAllMembers} from "./MemberQueries/GetAllMembers"
 import {MemberProgressType, getMemberProgress} from "./MemberQueries/GetMemberProgress"
 import { RankedMembersType, getMemberRankings } from "./MemberQueries/GetMemberRankings";
-import { CompanyMemberDetailType, getAllMemberDetails } from "./MemberQueries/getAllMemberDetails";
+import { CompanyMemberDetailType, getAllMemberDetails } from "./MemberQueries/GetAllMemberDetails";
 import { changeMemberIdentifiers } from "./MemberQueries/SetIdentifiers";
 import AppConfigs from "../../configs/app_configs"
 import { Op } from "sequelize";
