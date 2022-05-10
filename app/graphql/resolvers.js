@@ -18,6 +18,7 @@ export default combineResolvers([
 				return new Date(value)
 			},
 			serialize(value) {
+				if (typeof value === 'string') return value;
 				return value.toISOString();
 			}
 		})
