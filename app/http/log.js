@@ -8,6 +8,7 @@ function formatNumber(num) {
 }
 
 export const sendStaffNotfication = (message) => {
+    if (!process.env.SEND_STAFF_NOTIFICATIONS) return;
     const authOptions = {
         url: process.env.WEBHOOK_URL,
         form: {
