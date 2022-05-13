@@ -12,7 +12,7 @@ export const accessTokenResolver = code => {
                 client_secret: AppConfigs.client_secret,
                 grant_type: 'authorization_code',
                 code: code,
-                redirect_uri: `${AppConfigs.back_url}/callback`,
+                redirect_uri: `${AppConfigs.back_url}/api/callback`,
                 scope: 'identify'
             },
             headers: {
