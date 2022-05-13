@@ -20,7 +20,9 @@ export default class Auth extends Entity {
             const discordUser = await discordResolver(access.access_token);
             const webUser = await webUserResolver(this.db, discordUser.id)
             const companyMember = await this.db.members.findOne({where: {discord_id: discordUser.id}})
-            const companyManager = await this.db.managers.findOne({where: {member_id: companyMember.id}})
+            if (companyMember) {
+                var companyManager = await this.db.managers.findOne({where: {member_id: companyMember.id}})
+            }
             const {token, user, expires_in} = registerUser(discordUser, webUser, companyMember, companyManager);
     
             res.cookie('token', token, {
