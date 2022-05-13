@@ -1,6 +1,5 @@
 import fetch from 'node-fetch'
 import {URLSearchParams} from 'url';
-import AppConfigs from "../../../configs/app_configs"
 
 export const accessTokenResolver = code => {
     return new Promise((resolve, reject) => {
@@ -8,11 +7,11 @@ export const accessTokenResolver = code => {
             url: 'https://discord.com/api/v6/oauth2/token',
             method: 'POST',
             form: {
-                client_id: AppConfigs.client_id,
-                client_secret: AppConfigs.client_secret,
+                client_id: process.env.DISCORD_CLIENT_ID,
+                client_secret: process.env.DISCORD_CLIENT_SECRET,
                 grant_type: 'authorization_code',
                 code: code,
-                redirect_uri: `${AppConfigs.back_url}/api/callback`,
+                redirect_uri: `${process.env.BACK_URL}/api/callback`,
                 scope: 'identify'
             },
             headers: {

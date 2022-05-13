@@ -1,8 +1,4 @@
 package-lock.json
-dev.sql
 .env
-.babelrc
 /node_modules/
 app/domain/sheets/creds.json
-app/configs/app_configs.js
-app/configs/sequelize.json

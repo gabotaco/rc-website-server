@@ -8,10 +8,9 @@ import { ApolloServer } from "apollo-server-express"
 import {typeDefs} from './graphql/schema'
 import resolvers from "./graphql/resolvers"
 import {getUser} from "./domain/auth/index"
-import AppConfigs from "./configs/app_configs"
 
 const corsOptions = {
-    origin: AppConfigs.front_url,
+    origin: process.env.FRONT_URL,
     credentials: true
 }
 
@@ -49,7 +48,7 @@ server.start().then(() => {
 
     db.sequelize.sync().then(() => {
         app.listen({ port: 4000 }, () =>
-            console.log(`🚀 Server ready at ${AppConfigs.back_url}${server.graphqlPath}`)
+            console.log(`🚀 Server ready at ${process.env.BACK_URL}${server.graphqlPath}`)
         );
     })
 })

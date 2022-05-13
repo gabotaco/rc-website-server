@@ -9,7 +9,7 @@ function formatNumber(num) {
 
 export const sendStaffNotfication = (message) => {
     const authOptions = {
-        url: AppConfigs.webhook_url,
+        url: process.env.WEBHOOK_URL,
         form: {
             content: message
         },
@@ -29,7 +29,7 @@ export const sendStaffNotfication = (message) => {
 
 export const logPayout = (payout, member_name, member_id, manager_discord) => {
     const authOptions = {
-        url: AppConfigs.webhook_url,
+        url: process.env.WEBHOOK_URL,
         form: {
             payload_json: JSON.stringify({
                 content: payout.voucherAmount < 0 ? "<@404650985529540618>" : "",

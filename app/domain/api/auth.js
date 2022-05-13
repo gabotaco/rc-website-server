@@ -2,7 +2,6 @@ import {accessTokenResolver} from "../auth/resolvers/accessTokenResolver"
 import {discordResolver} from "../auth/resolvers/discordResolver"
 import {webUserResolver} from "../auth/resolvers/webUserResolver"
 import {registerUser} from "../auth/registration/registerUser"
-import AppConfigs from "../../configs/app_configs";
 import Entity from "../Entity"
 
 export default class Auth extends Entity {
@@ -15,7 +14,7 @@ export default class Auth extends Entity {
 
         try {
             const access = await accessTokenResolver(code).catch((err) => {
-                res.redirect(AppConfigs.front_url + "/home")
+                res.redirect(process.env.FRONT_URL + "/home")
             });
             if (!access) return;
             const discordUser = await discordResolver(access.access_token);
@@ -29,7 +28,7 @@ export default class Auth extends Entity {
                 maxAge: expires_in * 1000
             })
     
-            res.redirect(AppConfigs.front_url + "/home/profile")
+            res.redirect(process.env.FRONT_URL + "/home/profile")
         } catch (err) {
             console.error(err)
             this.errorResponse(res, err)
