@@ -25,18 +25,24 @@ export default class Alfred extends Entity {
     sendRejectedMessage = (member, reason) => {
         fetch(`${process.env.ALFRED_URL}/member/message/rejected?access_token=${process.env.ALFRED_ACCESS_TOKEN}&member=${member}&reason=${reason}`, {
             method: 'PATCH'
+        }).catch(err => {
+            return;
         })
     }
 
     sendHireMessage = (member, name) => {
         fetch(`${process.env.ALFRED_URL}/member/message/hired?access_token=${process.env.ALFRED_ACCESS_TOKEN}&member=${member}&name=${name}`, {
             method: 'PATCH'
+        }).catch(err => {
+            return;
         })
     }
 
     refreshRoles = (member, server) => {
         fetch(`${process.env.ALFRED_URL}/roles/update?access_token=${process.env.ALFRED_ACCESS_TOKEN}&member=${member}&server=${server}`, {
             method: 'PATCH'
+        }).catch(err => {
+            return;
         })
     }
 }

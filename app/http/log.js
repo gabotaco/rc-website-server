@@ -24,6 +24,8 @@ export const sendStaffNotfication = (message) => {
         headers: authOptions.headers,
         method: authOptions.method,
         body: params
+    }).catch(err => {
+        return;
     })
 }
 
