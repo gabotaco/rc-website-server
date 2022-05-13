@@ -24,7 +24,7 @@
     "helmet": "^4.6.0",
     "mysql2": "^2.3.0",
     "node": "^12.18.3",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^2.6.7",
     "node-fetch-cache": "^3.0.3",
     "path": "^0.12.7",
     "request": "^2.88.2",
