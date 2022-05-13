@@ -6,7 +6,7 @@ import Data from "./api/Data"
 import Utility from "./api/Utility"
 
 const sdkConfigs = {
-    key: AppConfigs.tycoon_key,
+    key: process.env.TYCOON_KEY,
     server_order: AppConfigs.server_order
 }
 

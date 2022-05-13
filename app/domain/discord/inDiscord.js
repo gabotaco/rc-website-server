@@ -1,12 +1,11 @@
 import fetch from 'node-fetch'
-import AppConfigs from "../../configs/app_configs";
 
 export const isInDiscord = (id, company) => {
     if (company === "rts") {
         var managerAuthOptions = {
             url: `https://discord.com/api/guilds/447157938390433792/members/${id}`,
             headers: {
-                "Authorization": `Bot ${AppConfigs.bot_secret}`,
+                "Authorization": `Bot ${process.env.DISCORD_BOT_TOKEN}`,
                 "content-type": "application/json"
             }
         }
@@ -14,7 +13,7 @@ export const isInDiscord = (id, company) => {
         var managerAuthOptions = {
             url: `https://discord.com/api/guilds/487285826544205845/members/${id}`,
             headers: {
-                "Authorization": `Bot ${AppConfigs.bot_secret}`,
+                "Authorization": `Bot ${process.env.DISCORD_BOT_TOKEN}`,
                 "content-type": "application/json"
             }
         }

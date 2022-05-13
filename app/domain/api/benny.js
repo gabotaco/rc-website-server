@@ -17,7 +17,7 @@ export default class Benny extends Entity {
                 auth
             });
             sheets.spreadsheets.values.get({ //gets the search results
-                spreadsheetId: AppConfigs.benny_sheet_id,
+                spreadsheetId: process.env.BENNY_SHEET_ID,
                 range: "Mods List!C3:C500",
             }, (err, response) => {
                 if (err) {
@@ -47,7 +47,7 @@ export default class Benny extends Entity {
             });
             sheets.spreadsheets.values.update({ //Puts what they typed into the search bar
                 auth: auth,
-                spreadsheetId: AppConfigs.benny_sheet_id,
+                spreadsheetId: process.env.BENNY_SHEET_ID,
                 range: "Search Engine!D21:G22",
                 valueInputOption: "USER_ENTERED",
                 resource: {
@@ -61,7 +61,7 @@ export default class Benny extends Entity {
                     return this.errorResponse(res, err);
                 } else { //no error
                     sheets.spreadsheets.values.get({ //gets the search results
-                        spreadsheetId: AppConfigs.benny_sheet_id,
+                        spreadsheetId: process.env.BENNY_SHEET_ID,
                         range: "Search Engine!E26:H35",
                     }, (err, response) => {
                         if (err) {
