@@ -20,7 +20,7 @@ const AppConfigs = {
 	ttpermissions: {
 		"ADMIN": 3,
 		"SEARCH_ALL": 2,
-		"SEARCH_OTHERS": 1,
+		"SEARCH_OTHERS": 0,
 		"SEE_SELF": 0,
 		"UNLINKED": -1
 	},
