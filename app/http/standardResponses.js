@@ -2,7 +2,7 @@
 export const errorResponse = (res, body = null) => {
     return res.status(400).send( body === null ? {
         error: "Invalid params"
-    } : body)
+    } : (typeof body === 'string' ? {error: body} : body))
 }
 
 export const unauthorizedResponse = (res, body = null) => {
