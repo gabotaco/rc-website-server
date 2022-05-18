@@ -64,5 +64,5 @@ function parseCompanyMember(companyMember, companyManager) {
         else perms = {...exManagerPerms, manager_id: companyManager.id}
     }
 
-    return {...perms, member_id: companyMember.id, welcome: companyMember.welcome}
+    return {...perms, member_id: companyMember.id, welcome: companyMember.welcome, company: companyMember.company, in_game_name: companyMember.in_game_name}
 }

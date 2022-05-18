@@ -136,5 +136,29 @@ export const routes = (db, app) => {
         }
     })
 
+    app.get("/api/tycoon/id", function (req, res) {
+        try {
+            authenticateRoute({app: [AppConfigs.permissions.OWNER, AppConfigs.permissions.MANAGER, AppConfigs.permissions.MEMBER, AppConfigs.permissions.GUEST]}, req, () => api.Tycoon.getId(req, res))
+        } catch (e) {
+            return unauthorizedResponse(res)
+        }
+    })
+
+    app.get("/api/discord", function (req, res) {
+        try {
+            authenticateRoute({app: [AppConfigs.permissions.GUEST]}, req, () => api.Applications.isInDiscord(req, res))
+        } catch (e) {
+            return unauthorizedResponse(res)
+        }
+    })
+
+    app.post("/api/apply", function (req, res) {
+        try {
+            authenticateRoute({app: [AppConfigs.permissions.GUEST]}, req, () => api.Applications.apply(req, res))
+        } catch (e) {
+            return unauthorizedResponse(res)
+        }
+    })
+
     return app;
 }

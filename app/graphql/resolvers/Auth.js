@@ -11,7 +11,10 @@ export const typeDef = gql`
         in_game_id: Int,
         permission: Int!,
         permission_title: String!,
-        member_id: Int
+        member_id: Int,
+        company: String,
+        welcome: Boolean,
+        in_game_name: String
     }
     
     extend type Query {

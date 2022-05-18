@@ -59,4 +59,19 @@ export default class Tycoon extends Entity {
             this.errorResponse(res, err.message)
         })
     }
+
+    getId = async (req, res) => {
+        if (req.user.in_game_id) {
+            return this.successResponse(res, {user_id: req.user.in_game_id});
+        }
+
+        sdk.Utility.snowflake2user(req.user.id).then(async (user_id) => {
+            this.successResponse(res, {user_id: user_id});
+            if (user_id) {
+                await db.website.create({discord_id: req.user.id, in_game_id: user_id})
+            }
+        }).catch((err) => {
+            this.errorResponse(res, err.message)
+        })
+    }
 }
