@@ -77,8 +77,8 @@ export default class Management extends Entity {
                         sendStaffNotfication(`<@${req.user.id}> AKA **${req.body.name}** (**${req.body.member}**) was rehired to **${req.body.company.toUpperCase()}**!`)
                     }
 
-                    this.Alfred.refreshRoles(req.body.discord, "447157938390433792")
-                    this.Alfred.refreshRoles(req.body.discord, "487285826544205845")
+                    this.api.Alfred.refreshRoles(req.body.discord, "447157938390433792")
+                    this.api.Alfred.refreshRoles(req.body.discord, "487285826544205845")
 
                     this.successResponse(res);
                 }
