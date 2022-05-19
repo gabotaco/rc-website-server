@@ -52,13 +52,13 @@ export default class Applications extends Entity {
                 return this.errorResponse(res, {error: "You already have a pending application"});
             }
 
-            this.db.applications.create({discord_id: req.user.id, in_game_name: req.body.in_game_name, in_game_id: req.body.in_game_id, referred_id: req.body.referred_id, cooldown: !req.body.cooldown ? null : req.body.cooldown, play_per_week: req.body.play_per_week, company: req.body.company, country: req.body.country, why: req.body.why, anything: req.body.anything}).then(() => { 
+            this.db.applications.create({discord_id: req.user.id, in_game_name: req.body.in_game_name, in_game_id: req.body.in_game_id, referred_id: req.body.referred_id ? req.body.referred_id : null, cooldown: !req.body.cooldown ? null : req.body.cooldown, play_per_week: req.body.play_per_week, company: req.body.company, country: req.body.country, why: req.body.why, anything: req.body.anything}).then(() => { 
                 this.successResponse(res);
                 sendStaffNotfication(`**${req.body.in_game_name}** (**${req.body.in_game_id}**) <@${req.body.discord_id}> has just applied to **${req.body.company.toUpperCase()}**!`)
             }).catch((err) => {
                 console.error(err)
                 this.errorResponse(res, {error: "There was a problem adding your application to the database"})
-                sendStaffNotfication(`**FAILED APPLICATION** **${req.body.in_game_id}** <@${req.body.discord_id}>`)
+                sendStaffNotfication(`**FAILED APPLICATION** **${req.body.in_game_id}** <@${req.user.id}>`)
             })
 
         }).catch(err => {
