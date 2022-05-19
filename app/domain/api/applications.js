@@ -1,7 +1,7 @@
 import Entity from "../Entity"
+import { Op } from "sequelize";
 import {isInDiscord} from "../discord/inDiscord"
 import { sendStaffNotfication } from "../../http/log"
-import { Op } from "sequelize";
 
 export default class Applications extends Entity {
     constructor(db, app, api) {
@@ -31,7 +31,7 @@ export default class Applications extends Entity {
 
         isInDiscord(req.user.id, req.query.company).then((inDiscord) => {
             return this.successResponse(res, {in_discord: inDiscord})
-        }).catch((err) => { 
+        }).catch((err) => {
             this.errorResponse(res, err.message)
         })
     }
@@ -46,15 +46,15 @@ export default class Applications extends Entity {
         req.body.country = decodeURIComponent(req.body.country).replace(/([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])/g, '');
         req.body.why = decodeURIComponent(req.body.why).replace(/([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])/g, '')
         req.body.anything = decodeURIComponent(req.body.anything).replace(/([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])/g, '')
-    
-        this.db.applications.findOne({where: {discord_id: req.user.id, status: { [Op.ne]: 'Rejected' }}}).then((result) => { 
+
+        this.db.applications.findOne({where: {discord_id: req.user.id, status: { [Op.ne]: 'Rejected' }}}).then((result) => {
             if (result) {
                 return this.errorResponse(res, {error: "You already have a pending application"});
             }
 
-            this.db.applications.create({discord_id: req.user.id, in_game_name: req.body.in_game_name, in_game_id: req.body.in_game_id, referred_id: req.body.referred_id ? req.body.referred_id : null, cooldown: !req.body.cooldown ? null : req.body.cooldown, play_per_week: req.body.play_per_week, company: req.body.company, country: req.body.country, why: req.body.why, anything: req.body.anything}).then(() => { 
+            this.db.applications.create({discord_id: req.user.id, in_game_name: req.body.in_game_name, in_game_id: req.body.in_game_id, referred_id: req.body.referred_id ? req.body.referred_id : null, cooldown: !req.body.cooldown ? null : req.body.cooldown, play_per_week: req.body.play_per_week, company: req.body.company, country: req.body.country, why: req.body.why, anything: req.body.anything}).then(() => {
                 this.successResponse(res);
-                sendStaffNotfication(`**${req.body.in_game_name}** (**${req.body.in_game_id}**) <@${req.body.discord_id}> has just applied to **${req.body.company.toUpperCase()}**!`)
+                sendStaffNotfication(`**${req.body.in_game_name}** (**${req.body.in_game_id}**) <@${req.user.id}> has just applied to **${req.body.company.toUpperCase()}**!`)
             }).catch((err) => {
                 console.error(err)
                 this.errorResponse(res, {error: "There was a problem adding your application to the database"})
