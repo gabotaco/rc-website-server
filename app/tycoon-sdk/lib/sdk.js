@@ -8,7 +8,7 @@ export default class Sdk {
 	}
 
 	buildUrl = (request) => {
-		let url = `https://${request.server}/status${request.uri}`
+		let url = `${request.server}/status${request.uri}`
 
 		return url
 	}
