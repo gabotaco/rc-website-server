@@ -15,6 +15,11 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: false,
                 defaultValue: 0
             },
+            public_key: {
+                type: DataTypes.STRING,
+                allowNull: true,
+                defaultValue: null
+            },
             permission: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
