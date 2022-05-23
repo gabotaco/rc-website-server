@@ -1,9 +1,9 @@
 const AppConfigs = {
 	server_order: [
-		"tycoon-njyvop.users.cfx.re",
-		"server.tycoon.community:30121",
-		"tycoon-2epova.users.cfx.re",
-		"server.tycoon.community:30120"
+		"https://tycoon-njyvop.users.cfx.re",
+		"http://server.tycoon.community:30121",
+		"https://tycoon-2epova.users.cfx.re",
+		"http://server.tycoon.community:30120"
 	],
 	permissions: {
 		"OWNER": 3,
