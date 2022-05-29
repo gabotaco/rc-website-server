@@ -11,6 +11,7 @@ export default class Sdk {
 
 	buildUrl = request => {
 		let url = `${request.server}/status${request.uri}`;
+		if (!request.server.startsWith("http")) url = `http://${url}`;
 
 		return url;
 	};
