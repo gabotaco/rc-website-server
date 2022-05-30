@@ -77,16 +77,21 @@ export default class Tycoon extends Entity {
 	};
 
 	getId = async (req, res) => {
-		if (req.user.in_game_id) {
+		if (req.query.discord_id) {
+			const webuser = await this.db.website.findOne({where: {discord_id: req.query.discord_id}});
+			if (webuser) {
+				return this.successResponse(res, { user_id: webuser.in_game_id });
+			}
+		} else if (req.user.in_game_id) {
 			return this.successResponse(res, { user_id: req.user.in_game_id });
 		}
 
-		sdk.Utility.snowflake2user(req.user.id)
+		sdk.Utility.snowflake2user(req.query.discord_id ? req.query.discord_id : req.user.id)
 			.then(async user_id => {
 				this.successResponse(res, { user_id: user_id });
 				if (user_id) {
-					await db.website.create({
-						discord_id: req.user.id,
+					await this.db.website.create({
+						discord_id: req.query.discord_id ? req.query.discord_id : req.user.id,
 						in_game_id: user_id
 					});
 				}
