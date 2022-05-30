@@ -16,8 +16,12 @@ export const getTopTurnins = (db, num_players, from, to, company) => {
         },
         where: {
             company: company,
-            createdAt: {[Op.gte]: fromDate.toISOString()},
-            createdAt: {[Op.lte]: toDate.toISOString()}
+            createdAt: {
+                [Op.and]: [
+                    {[Op.gte]: fromDate.toISOString()},
+                    {[Op.lte]: toDate.toISOString()}
+                ]
+            }
         },
         order: [
             ['member', 'in_game_id', 'DESC']
