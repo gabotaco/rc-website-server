@@ -114,6 +114,12 @@ export default class Tycoon extends Entity {
 
 	getBackpack = async (req, res) => {
 		let uid = req.user.in_game_id;
+		if (
+			req.user.ttpermission >= AppConfigs.ttpermissions.SEARCH_OTHERS &&
+			req.query.id
+		) {
+			uid = req.query.id;
+		}
 		sdk.Player.getStorage(`u${uid}backpack`)
 			.then(response => {
 				this.successResponse(res, response);
