@@ -59,7 +59,7 @@ export default class Player extends Entity {
 		return this.makeApiRequest({
 			uri: "/companies/rts/ground.json",
 			method: "GET",
-			cache: "OFF",
+			cache: "QUICK",
 			public_key: true,
 			user_id: uid
 		});
