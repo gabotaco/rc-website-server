@@ -4,8 +4,8 @@ export const typeDef = gql`
     type RtsCashout {
         id: Int!
         member_id: Int!
-        vouchers: Int!
-        worth: Int!
+        vouchers: Float!
+        worth: Float!
         updatedAt: Date!
         createdAt: Date!
     }

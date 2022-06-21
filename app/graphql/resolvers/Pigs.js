@@ -6,8 +6,8 @@ export const typeDef = gql`
     type PigsCashout {
         id: Int!
         member_id: Int!
-        vouchers: Int
-        worth: Int!
+        vouchers: Float
+        worth: Float!
         updatedAt: Date!
         createdAt: Date!
     }
