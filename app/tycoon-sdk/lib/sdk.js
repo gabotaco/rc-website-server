@@ -10,20 +10,17 @@ export default class Sdk {
 	}
 
 	buildUrl = request => {
-		let url = `${request.server}/status${request.uri}`;
-		if (!request.server.startsWith("http")) url = `http://${url}`;
-
-		return url;
+		return `${request.server}${request.uri}`;
 	};
 
 	allServerApiCall = request => {
 		const serverPromises = this.configs.server_order.map(server => {
 			return this.apiCall({
 				server: server,
-				uri: "/alive",
+				uri: "/charges.json",
 				method: "GET",
 				cache: false,
-				responseType: "EMPTY"
+				responseType: "json"
 			}).then(() => {
 				return server;
 			});
@@ -33,7 +30,7 @@ export default class Sdk {
 			.then(server => {
 				return this.apiCall({ ...request, server: server });
 			})
-			.catch(() => {
+			.catch(err => {
 				throw new Error("Tycoon Servers Offline");
 			});
 	};
@@ -60,7 +57,15 @@ export default class Sdk {
 			timeout: request.timeout || 10000,
 			responseType: request.responseType || "json",
 			cache: request.cache || "SHORT"
-		});
+		})
+			.then(response => {
+				return response;
+			})
+			.catch(err => {
+				if (err instanceof Promise)
+					return err.then(response => response).catch(err => err.code);
+				throw new Error(err.message);
+			});
 	};
 
 	getDefaultHeaders = () => ({
