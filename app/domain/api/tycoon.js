@@ -8,7 +8,7 @@ export default class Tycoon extends Entity {
 	}
 
 	getPositions = async (req, res) => {
-		const server = req.params.server;
+		const server = `http://v1.api.tycoon.community/${req.params.server}`;
 
 		sdk.Server.getPositions(server)
 			.then(response => {
@@ -55,7 +55,7 @@ export default class Tycoon extends Entity {
 	};
 
 	getPlayers = async (req, res) => {
-		const server = req.params.server;
+		const server = `http://v1.api.tycoon.community/${req.params.server}`;
 
 		sdk.Server.getPlayers(server)
 			.then(response => {
@@ -78,7 +78,9 @@ export default class Tycoon extends Entity {
 
 	getId = async (req, res) => {
 		if (req.query.discord_id) {
-			const webuser = await this.db.website.findOne({where: {discord_id: req.query.discord_id}});
+			const webuser = await this.db.website.findOne({
+				where: { discord_id: req.query.discord_id }
+			});
 			if (webuser) {
 				return this.successResponse(res, { user_id: webuser.in_game_id });
 			}
@@ -86,12 +88,16 @@ export default class Tycoon extends Entity {
 			return this.successResponse(res, { user_id: req.user.in_game_id });
 		}
 
-		sdk.Utility.snowflake2user(req.query.discord_id ? req.query.discord_id : req.user.id)
+		sdk.Utility.snowflake2user(
+			req.query.discord_id ? req.query.discord_id : req.user.id
+		)
 			.then(async user_id => {
 				this.successResponse(res, { user_id: user_id });
 				if (user_id) {
 					await this.db.website.create({
-						discord_id: req.query.discord_id ? req.query.discord_id : req.user.id,
+						discord_id: req.query.discord_id
+							? req.query.discord_id
+							: req.user.id,
 						in_game_id: user_id
 					});
 				}

@@ -57,17 +57,16 @@ export default class Player extends Entity {
 
 	getCurrentVehicles = uid => {
 		return this.makeApiRequest({
-			server: "http://server.tycoon.community:30120",
+			server: "http://v1.api.tycoon.community/main",
 			uri: "/widget/players.json",
 			method: "GET",
 			timeout: 2000,
 			cache: "SHORT"
 		})
 			.then(data => {
-				// Check if the player is in the data
 				if (data.players.find(player => player[2] === uid)) {
 					return this.makeApiRequest({
-						server: "http://server.tycoon.community:30120",
+						server: "http://v1.api.tycoon.community/main",
 						uri: "/companies/rts/ground.json",
 						method: "GET",
 						cache: "QUICK",
@@ -76,7 +75,7 @@ export default class Player extends Entity {
 					});
 				} else {
 					return this.makeApiRequest({
-						server: "http://server.tycoon.community:30121",
+						server: "http://v1.api.tycoon.community/beta",
 						uri: "/companies/rts/ground.json",
 						method: "GET",
 						cache: "QUICK",
