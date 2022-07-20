@@ -9,15 +9,16 @@ export default class Alfred extends Entity {
     }
 
     restart = (req, res) => {
+        const that = this;
         sendStaffNotfication(`<@${req.user.id}> restarted Alfred.`)
     
         child_process.exec(`pm2 restart Alfred`, function (err, stdout, stderr) {
             if (err) {
                 console.error(err)
-                this.errorResponse(res, err)
+                that.errorResponse(res, err)
             }
             else {
-                this.successResponse(res)
+                that.successResponse(res)
             }
         })
     }
