@@ -6,8 +6,12 @@ export const addUser = (token, expires_in, user) => {
 
 export const getUser = (token) => {
     const user = accessHistory[token]
-    if (user && Date.now() <= user.expires_at) {
-        return user;
+    if (user){
+        if(Date.now() <= user.expires_at) {
+            return user;
+        } else{
+            delete accessHistory[token];
+            return null;
     } else {
         return null;
     }
