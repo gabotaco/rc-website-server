@@ -12,6 +12,7 @@ export const getUser = (token) => {
         } else{
             delete accessHistory[token];
             return null;
+        }
     } else {
         return null;
     }
