@@ -14,6 +14,7 @@ export default class Management extends Entity {
 
             this.db.members.findOne({where: {in_game_id: req.body.member}}).then(async (result) => {
                 if (!result) {
+                    //Hire
                     const t = await this.db.sequelize.transaction();
 
                     this.db.members.create({
@@ -47,7 +48,7 @@ export default class Management extends Entity {
                             })
                         }
 
-                        sendStaffNotfication(`<@${req.user.id}> AKA **${req.body.name}** (**${req.body.member}**) was rehired to **${req.body.company.toUpperCase()}**!`)
+                        sendStaffNotfication(`<@${req.user.id}> hired <@${req.user.discord}> AKA **${req.body.name}** (**${req.body.member}**) to **${req.body.company.toUpperCase()}**!`)
 
                         this.api.Alfred.refreshRoles(req.body.discord, "447157938390433792")
                         this.api.Alfred.refreshRoles(req.body.discord, "487285826544205845")
@@ -63,7 +64,7 @@ export default class Management extends Entity {
                         this.errorResponse(res, err)
                     })
                 } else {
-
+                    //Rehire
                     result.in_game_id = req.body.member;
                     result.discord_id = this.db.sequelize.escape(req.body.discord).slice(1, -1);
                     result.in_game_name = this.db.sequelize.escape(req.body.name).slice(1, -1);
