@@ -48,7 +48,7 @@ export default class Management extends Entity {
                             })
                         }
 
-                        sendStaffNotfication(`<@${req.user.id}> hired <@${req.user.discord}> AKA **${req.body.name}** (**${req.body.member}**) to **${req.body.company.toUpperCase()}**!`)
+                        sendStaffNotfication(`<@${req.user.id}> hired <@${req.body.discord}> AKA **${req.body.name}** (**${req.body.member}**) to **${req.body.company.toUpperCase()}**!`)
 
                         this.api.Alfred.refreshRoles(req.body.discord, "447157938390433792")
                         this.api.Alfred.refreshRoles(req.body.discord, "487285826544205845")
