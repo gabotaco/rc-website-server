@@ -10,8 +10,7 @@ module.exports = (sequelize, DataTypes) => {
 			},
 			rank: {
 				type: DataTypes.INTEGER,
-				allowNull: true,
-				defaultValue: null
+				allowNull: false
 			},
 			discord_id: {
 				type: DataTypes.STRING(18),

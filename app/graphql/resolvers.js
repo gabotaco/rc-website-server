@@ -1,21 +1,22 @@
-import {combineResolvers} from "./lib/combineResolvers";
-import ApplicationsResolvers from './resolvers/Application'
-import ManagersResolvers from './resolvers/Manager'
-import MembersResolvers from './resolvers/Member'
-import PayoutsResolvers from './resolvers/Payout'
-import CompanyResolvers from './resolvers/Company'
-import PigsCashoutResolvers from './resolvers/Pigs'
-import RtsCashoutResolvers from './resolvers/Rts'
-import WebsiteCashoutResolvers from './resolvers/Website'
-import AuthResolvers from "./resolvers/Auth"
-import { GraphQLScalarType } from "graphql";
+import ApplicationsResolvers from './resolvers/Application';
+import AuthResolvers from './resolvers/Auth';
+import CompanyResolvers from './resolvers/Company';
+import { GraphQLScalarType } from 'graphql';
+import ManagersResolvers from './resolvers/Manager';
+import MembersResolvers from './resolvers/Member';
+import PagedResolvers from './resolvers/Paged';
+import PayoutsResolvers from './resolvers/Payout';
+import PigsCashoutResolvers from './resolvers/Pigs';
+import RtsCashoutResolvers from './resolvers/Rts';
+import WebsiteCashoutResolvers from './resolvers/Website';
+import { combineResolvers } from './lib/combineResolvers';
 
 export default combineResolvers([
 	{
 		Date: new GraphQLScalarType({
 			name: 'Date',
 			parseValue(value) {
-				return new Date(value)
+				return new Date(value);
 			},
 			serialize(value) {
 				if (typeof value === 'string') return value;
@@ -25,13 +26,13 @@ export default combineResolvers([
 	},
 	{
 		JSON: new GraphQLScalarType({
-			name: "JSON",
+			name: 'JSON',
 			parseValue(value) {
-				return JSON.parse(value)
+				return JSON.parse(value);
 			},
 			serialize(value) {
-				if (typeof value === 'object') return value
-				return JSON.stringify(value)
+				if (typeof value === 'object') return value;
+				return JSON.stringify(value);
 			}
 		})
 	},
@@ -43,5 +44,6 @@ export default combineResolvers([
 	RtsCashoutResolvers,
 	WebsiteCashoutResolvers,
 	AuthResolvers,
-	CompanyResolvers
-])
+	CompanyResolvers,
+	PagedResolvers
+]);

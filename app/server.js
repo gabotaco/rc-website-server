@@ -86,6 +86,6 @@ function updateRanks() {
 				result[i].save();
 			}
 
-			console.log('Ranks updated');
+			console.log('🏅 Ranks updated');
 		});
 }
