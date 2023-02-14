@@ -606,7 +606,7 @@ export default class Payout extends Entity {
                 as: 'pigs'
             }]
         }).then((memberDetails) => {
-            if (req.body.company === "pigs") {
+            if (req.query.company === "pigs") {
                 var money = voucherWorth(memberDetails.pigs.vouchers, voucherAmount)
                 var DoRank = RankUp(memberDetails.pigs.vouchers, voucherAmount)
                 oldProgress = Math.floor((memberDetails.pigs.vouchers / rankVouchers) * 100);
