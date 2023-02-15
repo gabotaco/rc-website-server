@@ -90,6 +90,17 @@ export const getPaginatedAllMemberDetails = (db, args, recursive) => {
 							as: 'pigs'
 						}
 					],
+					attributes: {
+						include: [
+							[
+								db.sequelize.literal(
+									'(SELECT rank FROM (SELECT members.id, (RANK() OVER (ORDER BY (rts.vouchers + pigs.vouchers) DESC)) AS rank FROM `members` AS `members` LEFT OUTER JOIN `rts` AS `rts` ON `members`.`id` = `rts`.`member_id` LEFT OUTER JOIN `pigs` AS `pigs` ON `members`.`id` = `pigs`.`member_id`) r WHERE r.id=members.id)'
+								),
+								'rank'
+							]
+						]
+					},
+
 					order: args.order ? args.order : [['rank', 'ASC']],
 					limit: args.limit,
 					offset: args.offset < 0 ? 0 : args.offset,

@@ -76,7 +76,6 @@ function parseCompanyMember(companyMember, companyManager) {
 	return {
 		...perms,
 		member_id: companyMember.id,
-		rank: companyMember.rank,
 		welcome: companyMember.welcome,
 		company: companyMember.company,
 		in_game_name: companyMember.in_game_name

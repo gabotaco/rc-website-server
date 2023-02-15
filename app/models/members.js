@@ -8,10 +8,6 @@ module.exports = (sequelize, DataTypes) => {
 				autoIncrement: true,
 				allowNull: false
 			},
-			rank: {
-				type: DataTypes.INTEGER,
-				allowNull: false
-			},
 			discord_id: {
 				type: DataTypes.STRING(18),
 				allowNull: false

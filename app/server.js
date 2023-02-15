@@ -52,40 +52,5 @@ server.start().then(() => {
 				`🚀 Server ready at ${process.env.BACK_URL}${server.graphqlPath}`
 			)
 		);
-
-		updateRanks();
 	});
 });
-
-function updateRanks() {
-	db.members
-		.findAll({
-			include: [
-				{
-					model: db.rts,
-					as: 'rts'
-				},
-				{
-					model: db.pigs,
-					as: 'pigs'
-				}
-			]
-		})
-		.then(result => {
-			for (let i = 0; i < result.length; i++) {
-				result[i].vouchers_turned_in =
-					result[i].pigs.vouchers + result[i].rts.vouchers;
-			}
-
-			result.sort((a, b) => {
-				return b.vouchers_turned_in - a.vouchers_turned_in;
-			});
-
-			for (let i = 0; i < result.length; i++) {
-				result[i].rank = i + 1;
-				result[i].save();
-			}
-
-			console.log('🏅 Ranks updated');
-		});
-}
