@@ -102,49 +102,40 @@ export const getPaginatedAllMemberDetails = (db, args, recursive) => {
 					},
 
 					order: args.order ? args.order : [['rank', 'ASC']],
-					limit: args.limit,
+					limit: args.limit ? args.limit : 10,
 					offset: args.offset < 0 ? 0 : args.offset,
-					where: args.textFilter
-						? {
-								[Op.or]: [
-									{
-										rank: {
-											[Op.like]: `%${args.textFilter}%`
-										}
-									},
-									{
-										in_game_id: {
-											[Op.like]: `%${args.textFilter}%`
-										}
-									},
-									{
-										in_game_name: {
-											[Op.like]: `%${args.textFilter}%`
-										}
-									},
-									{
-										'$rts.vouchers$': {
-											[Op.like]: `%${args.textFilter}%`
-										}
-									},
-									{
-										'$pigs.vouchers$': {
-											[Op.like]: `%${args.textFilter}%`
-										}
-									},
-									{
-										company: {
-											[Op.like]: `%${args.textFilter}%`
-										}
-									}
-								]
-						  }
-						: true,
 					where:
-						companyFilters.length > 0
+						args.textFilter || args.filter
 							? {
+									[Op.or]: [
+										{
+											in_game_id: {
+												[Op.like]: `%${args.textFilter}%`
+											}
+										},
+										{
+											in_game_name: {
+												[Op.like]: `%${args.textFilter}%`
+											}
+										},
+										{
+											'$rts.vouchers$': {
+												[Op.like]: `%${args.textFilter}%`
+											}
+										},
+										{
+											'$pigs.vouchers$': {
+												[Op.like]: `%${args.textFilter}%`
+											}
+										},
+										{
+											company: {
+												[Op.like]: `%${args.textFilter}%`
+											}
+										}
+									],
 									company: {
-										[Op.or]: companyFilters
+										[Op.in]: companyFilters
 									}
 							  }
 							: true
@@ -164,25 +155,26 @@ export const getPaginatedAllMemberDetails = (db, args, recursive) => {
 
 					rows.forEach(row => {
 						response.push({
-							id: row.id,
-							rank: row.rank,
-							discord_id: row.discord_id,
-							in_game_name: row.in_game_name,
-							in_game_id: row.in_game_id,
-							company: row.company,
-							deadline: row.deadline,
-							fire_reason: row.fire_reason,
-							last_turnin: row.last_turnin,
-							warnings: row.warnings,
-							welcome: row.welcome,
-							updatedAt: row.updatedAt,
-							createdAt: row.createdAt,
-							pigs: row.pigs,
-							rts: row.rts,
-							vouchers_turned_in: row.pigs.vouchers + row.rts.vouchers,
-							pigs_rank: pigsRank(row),
-							rts_rank: rtsRank(row),
-							manager: managerIDs.includes(row.id)
+							id: row.dataValues.id,
+							rank: row.dataValues.rank,
+							discord_id: row.dataValues.discord_id,
+							in_game_name: row.dataValues.in_game_name,
+							in_game_id: row.dataValues.in_game_id,
+							company: row.dataValues.company,
+							deadline: row.dataValues.deadline,
+							fire_reason: row.dataValues.fire_reason,
+							last_turnin: row.dataValues.last_turnin,
+							warnings: row.dataValues.warnings,
+							welcome: row.dataValues.welcome,
+							updatedAt: row.dataValues.updatedAt,
+							createdAt: row.dataValues.createdAt,
+							pigs: row.dataValues.pigs,
+							rts: row.dataValues.rts,
+							vouchers_turned_in:
+								row.dataValues.pigs.vouchers + row.dataValues.rts.vouchers,
+							pigs_rank: pigsRank(row.dataValues),
+							rts_rank: rtsRank(row.dataValues),
+							manager: managerIDs.includes(row.dataValues.id)
 						});
 					});
 
