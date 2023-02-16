@@ -3,6 +3,7 @@ import Sdk from '../../tycoon-sdk/lib/sdk';
 import { accessTokenResolver } from '../auth/resolvers/accessTokenResolver';
 import { discordResolver } from '../auth/resolvers/discordResolver';
 import { registerUser } from '../auth/registration/registerUser';
+import { removeUser } from '../auth';
 import { webUserResolver } from '../auth/resolvers/webUserResolver';
 
 export default class Auth extends Entity {
@@ -53,6 +54,7 @@ export default class Auth extends Entity {
 
 	logout = async (req, res) => {
 		res.clearCookie('token');
+		if (req.cookies['token']) removeUser(req.cookies['token']);
 		return this.successResponse(res);
 	};
 
