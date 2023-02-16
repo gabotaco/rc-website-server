@@ -13,7 +13,6 @@ export const RankedMembersType = `
 `;
 
 export const getMemberRankings = (db, user) => {
-	console.time('getMemberRankings');
 	return db.members
 		.findAll({
 			include: [
@@ -63,7 +62,6 @@ export const getMemberRankings = (db, user) => {
 				return 0;
 			});
 
-			console.timeEnd('getMemberRankings');
 			return { rows: response, count: response.length };
 		});
 };
