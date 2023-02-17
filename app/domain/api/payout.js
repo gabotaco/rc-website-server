@@ -1,5 +1,5 @@
-import Entity from "../Entity"
-import {logPayout} from "../../http/log"
+import Entity from '../Entity';
+import { logPayout } from '../../http/log';
 
 export default class Payout extends Entity {
     generatePin

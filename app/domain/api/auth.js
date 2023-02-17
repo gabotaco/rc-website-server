@@ -23,9 +23,11 @@ export default class Auth extends Entity {
 			if (!access) return;
 			const discordUser = await discordResolver(access.access_token);
 			const webUser = await webUserResolver(this.db, discordUser.id);
+
 			const companyMember = await this.db.members.findOne({
 				where: { discord_id: discordUser.id }
 			});
+
 			if (companyMember) {
 				var companyManager = await this.db.managers.findOne({
 					where: { member_id: companyMember.id }
@@ -34,7 +36,7 @@ export default class Auth extends Entity {
 			const { token, user, expires_in } = registerUser(
 				discordUser,
 				webUser,
-				companyMember,
+				companyMember.dataValues,
 				companyManager
 			);
 
