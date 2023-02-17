@@ -27,12 +27,8 @@ export const getPaginatedWebUsers = async (db, args, recursive) => {
 			const rows = result.rows;
 
 			if (rows.length == 0 && result.count > 0 && !recursive) {
-				const lastPage = Math.ceil(result.count / args.limit);
-				return getPaginatedWebUsers(
-					db,
-					{ ...args, offset: (lastPage - 1) * args.limit },
-					true
-				);
+				const lastPage = Math.floor(result.count / args.limit);
+				return getPaginatedWebUsers(db, { ...args, offset: lastPage }, true);
 			}
 
 			return {
