@@ -83,7 +83,7 @@ export const getPaginatedMemberRankings = (db, args, user, recursive) => {
 			const rows = result.rows;
 
 			if (rows.length == 0 && result.count > 0 && !recursive) {
-				const lastPage = Math.ceil(result.count / args.limit);
+				const lastPage = Math.floor(result.count / args.limit);
 				return getPaginatedMemberRankings(
 					db,
 					{ ...args, offset: lastPage },

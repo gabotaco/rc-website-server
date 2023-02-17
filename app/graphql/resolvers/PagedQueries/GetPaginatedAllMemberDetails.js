@@ -145,7 +145,7 @@ export const getPaginatedAllMemberDetails = (db, args, recursive) => {
 					const rows = result.rows;
 
 					if (rows.length == 0 && result.count > 0 && !recursive) {
-						const lastPage = Math.ceil(result.count / args.limit);
+						const lastPage = Math.floor(result.count / args.limit);
 						return getPaginatedAllMemberDetails(
 							db,
 							{ ...args, offset: lastPage },
