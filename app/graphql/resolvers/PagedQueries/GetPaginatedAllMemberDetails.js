@@ -101,7 +101,7 @@ export const getPaginatedAllMemberDetails = (db, args, recursive) => {
 						]
 					},
 
-					order: args.order ? args.order : [['rank', 'ASC']],
+					order: [[db.sequelize.literal('rank'), 'ASC']],
 					limit: args.limit ? args.limit : 10,
 					offset: args.offset < 0 ? 0 : args.offset,
 					where:

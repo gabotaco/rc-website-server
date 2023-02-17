@@ -42,7 +42,7 @@ export const getPaginatedMemberRankings = (db, args, user, recursive) => {
 					'rank'
 				]
 			],
-			order: [[args.order ? args.order : 'rank', 'ASC']],
+			order: [[db.sequelize.literal('rank'), 'ASC']],
 			limit: args.limit ? args.limit : 10,
 			offset: args.offset < 0 ? 0 : args.offset,
 			where: args.textFilter
