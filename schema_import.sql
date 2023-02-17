@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS `applications`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `applications` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `discord_id` varchar(18) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `discord_id` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `in_game_name` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `in_game_id` int NOT NULL,
   `referred_id` int DEFAULT NULL,
