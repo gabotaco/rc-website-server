@@ -36,7 +36,7 @@ export default class Auth extends Entity {
 			const { token, user, expires_in } = registerUser(
 				discordUser,
 				webUser,
-				companyMember.dataValues,
+				companyMember ? companyMember.dataValues : null,
 				companyManager
 			);
 
