@@ -154,12 +154,12 @@ export default class Tycoon extends Entity {
 			return this.errorResponse(res, err.message);
 		});
 
-		if (JSON.parse(data[0]).error)
-			return this.errorResponse(res, JSON.parse(data[0]).error);
-		if (JSON.parse(data[1]).error)
-			return this.errorResponse(res, JSON.parse(data[1]).error);
-		if (JSON.parse(data[2]).error)
-			return this.errorResponse(res, JSON.parse(data[2]).error);
+		if (
+			typeof data[0] !== 'object' ||
+			typeof data[1] !== 'object' ||
+			typeof data[2] !== 'object'
+		)
+			return this.errorResponse(res, data);
 
 		let [
 			{ storages },
