@@ -11,7 +11,9 @@ export default class Player extends Entity {
 		return this.makeApiRequest({
 			uri: `/getuserbiz/${uid}`,
 			method: 'GET',
-			cache: 'SHORT'
+			cache: 'SHORT',
+			public_key: true,
+			user_id: uid
 		});
 	};
 
@@ -19,7 +21,9 @@ export default class Player extends Entity {
 		return this.makeApiRequest({
 			uri: `/ownedvehicles/${uid}`,
 			method: 'GET',
-			cache: 'SHORT'
+			cache: 'SHORT',
+			public_key: true,
+			user_id: uid
 		});
 	};
 
@@ -27,7 +31,9 @@ export default class Player extends Entity {
 		return this.makeApiRequest({
 			uri: `/data/${uid}`,
 			method: 'GET',
-			cache: 'SHORT'
+			cache: 'SHORT',
+			public_key: true,
+			user_id: uid
 		});
 	};
 
@@ -45,7 +51,9 @@ export default class Player extends Entity {
 		return this.makeApiRequest({
 			uri: `/wealth/${uid}`,
 			method: 'GET',
-			cache: 'SHORT'
+			cache: 'SHORT',
+			public_key: true,
+			user_id: uid
 		});
 	};
 

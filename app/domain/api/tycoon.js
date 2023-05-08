@@ -128,7 +128,7 @@ export default class Tycoon extends Entity {
 		) {
 			uid = req.query.id;
 		}
-		sdk.Player.getStorage(`u${uid}backpack`)
+		sdk.Player.getStorage(`u${uid}backpack`, uid)
 			.then(response => {
 				this.successResponse(res, response);
 			})
