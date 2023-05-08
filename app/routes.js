@@ -1,21 +1,21 @@
-import Api from "./domain/Api";
-import AppConfigs from "./configs/app_configs";
-import { authenticateRoute } from "./domain/auth/resolvers/authenticateResolver";
-import { sendStaffNotfication } from "./http/log";
-import { unauthorizedResponse } from "./http/standardResponses";
+import Api from './domain/Api';
+import AppConfigs from './configs/app_configs';
+import { authenticateRoute } from './domain/auth/resolvers/authenticateResolver';
+import { sendStaffNotfication } from './http/log';
+import { unauthorizedResponse } from './http/standardResponses';
 
 export const routes = (db, app) => {
 	const api = new Api(db, app);
 
-	app.get("/api/callback", async (req, res) => {
+	app.get('/api/callback', async (req, res) => {
 		api.Auth.login(req, res);
 	});
 
-	app.get("/api/auth/logout", async (req, res) => {
+	app.get('/api/auth/logout', async (req, res) => {
 		api.Auth.logout(req, res);
 	});
 
-	app.get("/api/alfred/restart", async (req, res) => {
+	app.get('/api/alfred/restart', async (req, res) => {
 		try {
 			authenticateRoute(
 				{ app: [AppConfigs.permissions.OWNER, AppConfigs.permissions.MANAGER] },
@@ -27,7 +27,7 @@ export const routes = (db, app) => {
 		}
 	});
 
-	app.get("/api/tycoon/positions/:server", async (req, res) => {
+	app.get('/api/tycoon/positions/:server', async (req, res) => {
 		try {
 			authenticateRoute(
 				{
@@ -46,40 +46,40 @@ export const routes = (db, app) => {
 		}
 	});
 
-	app.get("/api/tycoon/data", async (req, res) => {
+	app.get('/api/tycoon/data', async (req, res) => {
 		if (!req.user || !req.user.in_game_id) return unauthorizedResponse(res);
 
 		api.Tycoon.getData(req, res);
 	});
 
-	app.get("/api/tycoon/currentvehicles", async (req, res) => {
+	app.get('/api/tycoon/currentvehicles', async (req, res) => {
 		if (!req.user || !req.user.in_game_id) return unauthorizedResponse(res);
 
 		api.Tycoon.getCurrentVehicles(req, res);
 	});
 
-	app.get("/api/tycoon/biz", async (req, res) => {
+	app.get('/api/tycoon/biz', async (req, res) => {
 		if (!req.user || !req.user.in_game_id) return unauthorizedResponse(res);
 
 		api.Tycoon.getBiz(req, res);
 	});
 
 	//player backpack
-	app.get("/api/tycoon/backpack", async (req, res) => {
+	app.get('/api/tycoon/backpack', async (req, res) => {
 		if (!req.user || !req.user.in_game_id) return unauthorizedResponse(res);
 
 		api.Tycoon.getBackpack(req, res);
 	});
 
-	app.get("/api/tycoon/players/:server", async (req, res) => {
+	app.get('/api/tycoon/players/:server', async (req, res) => {
 		api.Tycoon.getPlayers(req, res);
 	});
 
-	app.get("/api/hire", function (req, res) {
+	app.get('/api/hire', function (req, res) {
 		api.Troll.hire(req, res);
 	});
 
-	app.get("/api/benny/list", function (req, res) {
+	app.get('/api/benny/list', function (req, res) {
 		try {
 			authenticateRoute(
 				{
@@ -97,7 +97,7 @@ export const routes = (db, app) => {
 		}
 	});
 
-	app.get("/api/benny/search", function (req, res) {
+	app.get('/api/benny/search', function (req, res) {
 		try {
 			authenticateRoute(
 				{
@@ -115,7 +115,7 @@ export const routes = (db, app) => {
 		}
 	});
 
-	app.get("/api/tycoon/key", function (req, res) {
+	app.get('/api/tycoon/key', function (req, res) {
 		try {
 			authenticateRoute({ tt: [AppConfigs.ttpermissions.ADMIN] }, req, () =>
 				api.Tycoon.getCharges(req, res)
@@ -125,7 +125,7 @@ export const routes = (db, app) => {
 		}
 	});
 
-	app.get("/api/applicant/:uid/details", function (req, res) {
+	app.get('/api/applicant/:uid/details', function (req, res) {
 		try {
 			authenticateRoute(
 				{ app: [AppConfigs.permissions.OWNER, AppConfigs.permissions.MANAGER] },
@@ -137,11 +137,11 @@ export const routes = (db, app) => {
 		}
 	});
 
-	app.post("/api/member/hire", function (req, res) {
+	app.post('/api/member/hire', function (req, res) {
 		if (!req.user) return unauthorizedResponse(res);
 
 		if (req.user.welcome == 0 && req.user.permission == 1) {
-			res.redirect("http://secret.rockwelltransport.com");
+			res.redirect('http://secret.rockwelltransport.com');
 			return sendStaffNotfication(
 				`This dummy ${req.user.username}#${req.user.discriminator} (<@${
 					req.user.id
@@ -164,7 +164,7 @@ export const routes = (db, app) => {
 		api.Management.hire(req, res);
 	});
 
-	app.post("/api/payout/calculate", function (req, res) {
+	app.post('/api/payout/calculate', function (req, res) {
 		try {
 			authenticateRoute(
 				{ app: [AppConfigs.permissions.OWNER, AppConfigs.permissions.MANAGER] },
@@ -176,7 +176,7 @@ export const routes = (db, app) => {
 		}
 	});
 
-	app.post("/api/payout/confirm", function (req, res) {
+	app.post('/api/payout/confirm', function (req, res) {
 		try {
 			authenticateRoute(
 				{ app: [AppConfigs.permissions.OWNER, AppConfigs.permissions.MANAGER] },
@@ -188,7 +188,7 @@ export const routes = (db, app) => {
 		}
 	});
 
-	app.get("/api/payout/calculate", function (req, res) {
+	app.get('/api/payout/calculate', function (req, res) {
 		try {
 			authenticateRoute(
 				{
@@ -206,7 +206,7 @@ export const routes = (db, app) => {
 		}
 	});
 
-	app.patch("/api/manager/pay", function (req, res) {
+	app.patch('/api/manager/pay', function (req, res) {
 		try {
 			authenticateRoute({ app: [AppConfigs.permissions.OWNER] }, req, () =>
 				api.Management.pay(req, res)
@@ -216,7 +216,7 @@ export const routes = (db, app) => {
 		}
 	});
 
-	app.get("/api/tycoon/id", function (req, res) {
+	app.get('/api/tycoon/id', function (req, res) {
 		try {
 			authenticateRoute(
 				{
@@ -235,7 +235,7 @@ export const routes = (db, app) => {
 		}
 	});
 
-	app.get("/api/discord", function (req, res) {
+	app.get('/api/discord', function (req, res) {
 		try {
 			authenticateRoute({ app: [AppConfigs.permissions.GUEST] }, req, () =>
 				api.Applications.isInDiscord(req, res)
@@ -245,7 +245,7 @@ export const routes = (db, app) => {
 		}
 	});
 
-	app.post("/api/apply", function (req, res) {
+	app.post('/api/apply', function (req, res) {
 		try {
 			authenticateRoute({ app: [AppConfigs.permissions.GUEST] }, req, () =>
 				api.Applications.apply(req, res)
@@ -255,7 +255,7 @@ export const routes = (db, app) => {
 		}
 	});
 
-	app.post("/api/publickey", function (req, res) {
+	app.post('/api/publickey', function (req, res) {
 		try {
 			authenticateRoute(
 				{
@@ -267,6 +267,25 @@ export const routes = (db, app) => {
 				},
 				req,
 				() => api.Auth.setPublicKey(req, res)
+			);
+		} catch (e) {
+			return unauthorizedResponse(res);
+		}
+	});
+
+	app.get('/api/tycoon/storages', function (req, res) {
+		try {
+			authenticateRoute(
+				{
+					app: [
+						AppConfigs.permissions.OWNER,
+						AppConfigs.permissions.MANAGER,
+						AppConfigs.permissions.MEMBER,
+						AppConfigs.permissions.GUEST
+					]
+				},
+				req,
+				() => api.Tycoon.getStorages(req, res)
 			);
 		} catch (e) {
 			return unauthorizedResponse(res);

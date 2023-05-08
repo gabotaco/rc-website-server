@@ -1,6 +1,8 @@
-import AppConfigs from "../../configs/app_configs";
-import Entity from "../Entity";
-import sdk from "../../tycoon-sdk/TycoonSDK";
+import AppConfigs from '../../configs/app_configs';
+import Entity from '../Entity';
+import { getItemInfo } from '../tycoon/itemInfo';
+import sdk from '../../tycoon-sdk/TycoonSDK';
+import { sequelize } from '../../models';
 
 export default class Tycoon extends Entity {
 	constructor(db, app, api) {
@@ -133,5 +135,66 @@ export default class Tycoon extends Entity {
 			.catch(err => {
 				this.errorResponse(res, err.message);
 			});
+	};
+
+	getStorages = async (req, res) => {
+		let uid = req.user.in_game_id;
+		if (
+			req.user.ttpermission >= AppConfigs.ttpermissions.SEARCH_OTHERS &&
+			req.query.id
+		) {
+			uid = req.query.id;
+		}
+
+		let [
+			{ storages },
+			{
+				data: {
+					inventory,
+					licenses,
+					groups,
+					gaptitudes_v: {
+						physical: { strength }
+					}
+				}
+			},
+			{ data: backpack }
+		] = await Promise.all([
+			await sdk.Player.getStorages(uid),
+			await sdk.Player.getData(uid),
+			await sdk.Player.getStorage(`u${uid}backpack`)
+		]);
+
+		// Add inventory and backpack to storages
+		storages = [
+			{ name: 'inventory', inventory },
+			{ name: 'backpack', inventory: backpack },
+			...storages
+		];
+
+		for (const storage of storages) {
+			const promises = [];
+			const inventory = [];
+
+			Object.keys(storage.inventory).forEach(async key => {
+				promises.push(getItemInfo(key));
+			});
+
+			await Promise.allSettled(promises).then(result => {
+				result.forEach(itemResult => {
+					const item = itemResult.value;
+					inventory.push({
+						name: item.id,
+						dName: item.name,
+						amount: storage.inventory[item.id].amount || 1,
+						weight: item.weight || 0
+					});
+				});
+			});
+
+			storage.inventory = inventory;
+		}
+
+		this.successResponse(res, { storages, licenses, groups, strength });
 	};
 }
