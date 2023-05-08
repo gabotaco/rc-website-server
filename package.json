@@ -1,40 +1,40 @@
 {
-  "name": "rc-website-server",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "build": "webpack --entry ./app/server.js --output-filename bundle.min.js --output-path ./public/js --config webpack.config.js",
-    "start": "node -r dotenv/config node_modules/nodemon/bin/nodemon.js --exec babel-node app/server.js"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "apollo-server-express": "^3.1.2",
-    "child_process": "^1.0.2",
-    "cookie-parser": "^1.4.5",
-    "cors": "^2.8.5",
-    "deepmerge": "^4.2.2",
-    "dotenv": "^10.0.0",
-    "express": "^4.17.1",
-    "fs": "^0.0.1-security",
-    "google-auth-library": "^7.6.1",
-    "googleapis": "^84.0.0",
-    "graphql": "^16.5.0",
-    "helmet": "^4.6.0",
-    "mysql2": "^2.3.0",
-    "node": "^12.18.3",
-    "node-fetch": "^2.6.7",
-    "node-fetch-cache": "^3.0.3",
-    "path": "^0.12.7",
-    "request": "^2.88.2",
-    "sequelize": "^6.6.5"
-  },
-  "devDependencies": {
-    "@babel/cli": "^7.0.0",
-    "@babel/core": "^7.0.0",
-    "@babel/node": "^7.0.0",
-    "@babel/plugin-transform-modules-commonjs": "^7.15.0",
-    "nodemon": "^2.0.20"
-  }
+	"name": "rc-website-server",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"build": "webpack --entry ./app/server.js --output-filename bundle.min.js --output-path ./public/js --config webpack.config.js",
+		"start": "node -r dotenv/config node_modules/nodemon/bin/nodemon.js --exec babel-node app/server.js"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"apollo-server-express": "^3.1.2",
+		"child_process": "^1.0.2",
+		"cookie-parser": "^1.4.5",
+		"cors": "^2.8.5",
+		"deepmerge": "^4.2.2",
+		"dotenv": "^10.0.0",
+		"express": "^4.17.1",
+		"fs": "^0.0.1-security",
+		"google-auth-library": "^7.6.1",
+		"googleapis": "^84.0.0",
+		"graphql": "^16.5.0",
+		"helmet": "^4.6.0",
+		"mysql2": "^2.3.0",
+		"node": "^12.18.3",
+		"node-fetch": "^2.6.7",
+		"node-fetch-cache": "^3.0.3",
+		"path": "^0.12.7",
+		"request": "^2.88.2",
+		"sequelize": "^6.6.5"
+	},
+	"devDependencies": {
+		"@babel/cli": "^7.0.0",
+		"@babel/core": "^7.0.0",
+		"@babel/node": "^7.0.0",
+		"@babel/plugin-transform-modules-commonjs": "^7.15.0",
+		"nodemon": "^2.0.20"
+	}
 }

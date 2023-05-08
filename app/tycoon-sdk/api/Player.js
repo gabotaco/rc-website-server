@@ -35,7 +35,9 @@ export default class Player extends Entity {
 		return this.makeApiRequest({
 			uri: `/dataadv/${uid}`,
 			method: 'GET',
-			cache: 'SHORT'
+			cache: 'SHORT',
+			public_key: true,
+			user_id: uid
 		});
 	};
 
@@ -47,19 +49,23 @@ export default class Player extends Entity {
 		});
 	};
 
-	getStorage = storageid => {
+	getStorage = (storageid, uid) => {
 		return this.makeApiRequest({
 			uri: `/chest/${storageid}`,
 			method: 'GET',
-			cache: 'LONG'
+			cache: 'LONG',
+			public_key: true,
+			user_id: uid
 		});
 	};
 
-	getAllStorage = uid => {
+	getAllStorages = uid => {
 		return this.makeApiRequest({
 			uri: `/storages/${uid}`,
 			method: 'GET',
-			cache: 'LONG'
+			cache: 'LONG',
+			public_key: true,
+			user_id: uid
 		});
 	};
 
@@ -95,13 +101,5 @@ export default class Player extends Entity {
 			.catch(err => {
 				console.log(err);
 			});
-	};
-
-	getStorages = uid => {
-		return this.makeApiRequest({
-			uri: `/storages/${uid}`,
-			method: 'GET',
-			cache: 'SHORT'
-		});
 	};
 }
