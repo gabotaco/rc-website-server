@@ -1,5 +1,5 @@
-import apiRequest from "./apiRequest";
-import db from "../../models/index";
+import apiRequest from './apiRequest';
+import db from '../../models/index';
 
 const playerKeys = {};
 export default class Sdk {
@@ -17,10 +17,10 @@ export default class Sdk {
 		const serverPromises = this.configs.server_order.map(server => {
 			return this.apiCall({
 				server: server,
-				uri: "/charges.json",
-				method: "GET",
+				uri: '/charges.json',
+				method: 'GET',
 				cache: false,
-				responseType: "json"
+				responseType: 'json'
 			}).then(() => {
 				return server;
 			});
@@ -31,7 +31,7 @@ export default class Sdk {
 				return this.apiCall({ ...request, server: server });
 			})
 			.catch(err => {
-				throw new Error("Tycoon Servers Offline");
+				throw new Error('Tycoon Servers Offline');
 			});
 	};
 
@@ -45,18 +45,19 @@ export default class Sdk {
 
 		if (request.public_key && request.user_id) {
 			await this.getPlayerPublicKey(request.user_id).then(public_key => {
-				headers["X-Tycoon-Public-Key"] = public_key;
+				if (!public_key) return;
+				headers['X-Tycoon-Public-Key'] = public_key;
 			});
 		}
 
 		return apiRequest({
 			url: url,
-			method: request.method || "GET",
+			method: request.method || 'GET',
 			headers: headers,
 			body: request.body,
 			timeout: request.timeout || 10000,
-			responseType: request.responseType || "json",
-			cache: request.cache || "SHORT"
+			responseType: request.responseType || 'json',
+			cache: request.cache || 'SHORT'
 		})
 			.then(response => {
 				return response;
@@ -69,10 +70,10 @@ export default class Sdk {
 	};
 
 	getDefaultHeaders = () => ({
-		Accept: "application/json",
-		"Content-Type": "application/json",
-		"X-Requested-With": "XMLHttpRequest",
-		"X-Tycoon-Key": this.configs.key
+		Accept: 'application/json',
+		'Content-Type': 'application/json',
+		'X-Requested-With': 'XMLHttpRequest',
+		'X-Tycoon-Key': this.configs.key
 	});
 
 	getPlayerPublicKey = async user_id => {

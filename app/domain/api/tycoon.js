@@ -146,6 +146,21 @@ export default class Tycoon extends Entity {
 			uid = req.query.id;
 		}
 
+		const data = await Promise.all([
+			await sdk.Player.getAllStorages(uid),
+			await sdk.Player.getData(uid),
+			await sdk.Player.getStorage(`u${uid}backpack`, uid)
+		]).catch(err => {
+			return this.errorResponse(res, err.message);
+		});
+
+		if (
+			typeof data[0] !== 'object' ||
+			typeof data[1] !== 'object' ||
+			typeof data[2] !== 'object'
+		)
+			return this.errorResponse(res, data);
+
 		let [
 			{ storages },
 			{
@@ -159,11 +174,7 @@ export default class Tycoon extends Entity {
 				}
 			},
 			{ data: backpack }
-		] = await Promise.all([
-			await sdk.Player.getStorages(uid),
-			await sdk.Player.getData(uid),
-			await sdk.Player.getStorage(`u${uid}backpack`)
-		]);
+		] = data;
 
 		// Add inventory and backpack to storages
 		storages = [
@@ -172,29 +183,33 @@ export default class Tycoon extends Entity {
 			...storages
 		];
 
-		for (const storage of storages) {
-			const promises = [];
-			const inventory = [];
+		try {
+			for (const storage of storages) {
+				const promises = [];
+				const inventory = [];
 
-			Object.keys(storage.inventory).forEach(async key => {
-				promises.push(getItemInfo(key));
-			});
+				Object.keys(storage.inventory).forEach(async key => {
+					promises.push(getItemInfo(key));
+				});
 
-			await Promise.allSettled(promises).then(result => {
-				result.forEach(itemResult => {
-					const item = itemResult.value;
-					inventory.push({
-						name: item.id,
-						dName: item.name,
-						amount: storage.inventory[item.id].amount || 1,
-						weight: item.weight || 0
+				await Promise.allSettled(promises).then(result => {
+					result.forEach(itemResult => {
+						const item = itemResult.value;
+						inventory.push({
+							name: item.id,
+							dName: item.name,
+							amount: storage.inventory[item.id].amount || 1,
+							weight: item.weight || 0
+						});
 					});
 				});
-			});
 
-			storage.inventory = inventory;
+				storage.inventory = inventory;
+			}
+
+			this.successResponse(res, { storages, licenses, groups, strength });
+		} catch (err) {
+			this.errorResponse(res, err.message);
 		}
-
-		this.successResponse(res, { storages, licenses, groups, strength });
 	};
 }
