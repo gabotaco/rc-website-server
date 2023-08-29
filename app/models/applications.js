@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: false
             },
             discord_id: {
-                type: DataTypes.STRING(18),
+                type: DataTypes.STRING(20),
                 allowNull: false
             },
             in_game_name: {

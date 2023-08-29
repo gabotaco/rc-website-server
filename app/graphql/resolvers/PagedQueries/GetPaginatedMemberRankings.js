@@ -49,6 +49,11 @@ export const getPaginatedMemberRankings = (db, args, user, recursive) => {
 				? {
 						[Op.or]: [
 							{
+								discord_id: {
+									[Op.like]: `%${args.textFilter}%`
+								}
+							},
+							{
 								in_game_name: {
 									[Op.like]: `%${args.textFilter}%`
 								}
