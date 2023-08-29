@@ -77,7 +77,17 @@ export default class Player extends Entity {
 		});
 	};
 
-	getCurrentVehicles = uid => {
+	getTrunks = uid => {
+		return this.makeApiRequest({
+			uri: `/trunks/${uid}`,
+			method: 'GET',
+			cache: 'LONG',
+			public_key: true,
+			user_id: uid
+		});
+	};
+
+	getCurrentRTSVehicles = uid => {
 		return this.makeApiRequest({
 			server: 'http://v1.api.tycoon.community/main',
 			uri: '/widget/players.json',

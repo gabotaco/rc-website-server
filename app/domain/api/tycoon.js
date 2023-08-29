@@ -109,9 +109,9 @@ export default class Tycoon extends Entity {
 			});
 	};
 
-	getCurrentVehicles = async (req, res) => {
+	getCurrentRTSVehicles = async (req, res) => {
 		let uid = req.user.in_game_id;
-		sdk.Player.getCurrentVehicles(uid)
+		sdk.Player.getCurrentRTSVehicles(uid)
 			.then(response => {
 				this.successResponse(res, response);
 			})
@@ -211,5 +211,44 @@ export default class Tycoon extends Entity {
 		} catch (err) {
 			this.errorResponse(res, err.message);
 		}
+	};
+
+	getTrunks = async (req, res) => {
+		let uid = req.user.in_game_id;
+		if (
+			req.user.ttpermission >= AppConfigs.ttpermissions.SEARCH_OTHERS &&
+			req.query.id
+		) {
+			uid = req.query.id;
+		}
+		sdk.Player.getTrunks(uid)
+			.then(response => {
+				this.successResponse(res, response);
+			})
+			.catch(err => {
+				this.errorResponse(res, err.message);
+			});
+	};
+
+	getCurrentVehicles = async (req, res) => {
+		let uid = req.user.in_game_id;
+		if (
+			req.user.ttpermission >= AppConfigs.ttpermissions.SEARCH_OTHERS &&
+			req.query.id
+		) {
+			uid = req.query.id;
+		}
+
+		sdk.Server.getPositions()
+			.then(positions => {
+				positions.players.forEach(player => {
+					if (player[2] === uid) this.successResponse(res, player[4]);
+				});
+
+				if (!res.headersSent) this.successResponse(res, {});
+			})
+			.catch(err => {
+				this.errorResponse(res, err.message);
+			});
 	};
 }
