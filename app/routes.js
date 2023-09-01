@@ -52,10 +52,10 @@ export const routes = (db, app) => {
 		api.Tycoon.getData(req, res);
 	});
 
-	app.get('/api/tycoon/currentvehicles', async (req, res) => {
+	app.get('/api/tycoon/rts/currentvehicles', async (req, res) => {
 		if (!req.user || !req.user.in_game_id) return unauthorizedResponse(res);
 
-		api.Tycoon.getCurrentVehicles(req, res);
+		api.Tycoon.getCurrentRTSVehicles(req, res);
 	});
 
 	app.get('/api/tycoon/biz', async (req, res) => {
@@ -290,6 +290,18 @@ export const routes = (db, app) => {
 		} catch (e) {
 			return unauthorizedResponse(res);
 		}
+	});
+
+	app.get('/api/tycoon/trunks', function (req, res) {
+		if (!req.user || !req.user.in_game_id) return unauthorizedResponse(res);
+
+		api.Tycoon.getTrunks(req, res);
+	});
+
+	app.get('/api/tycoon/currentvehicles', function (req, res) {
+		if (!req.user || !req.user.in_game_id) return unauthorizedResponse(res);
+
+		api.Tycoon.getCurrentVehicles(req, res);
 	});
 
 	return app;
