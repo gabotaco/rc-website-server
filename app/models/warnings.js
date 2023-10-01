@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-  const Warning = sequelize.define(
-    "warning",
+  const Warnings = sequelize.define(
+    "warnings",
     {
       id: {
         type: DataTypes.INTEGER,
@@ -28,5 +28,5 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  return Warning;
+  return Warnings;
 };
