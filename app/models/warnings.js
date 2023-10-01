@@ -11,11 +11,16 @@ module.exports = (sequelize, DataTypes) => {
       member_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        unique: true,
+        unique: false,
       },
       reason: {
         type: DataTypes.STRING,
         allowNull: false,
+      },
+      createdAt: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: sequelize.literal("CURRENT_TIMESTAMP"),
       },
     },
     {
