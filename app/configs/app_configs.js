@@ -18,7 +18,7 @@ const AppConfigs = {
 	},
 	CEOID: "404650985529540618",
 	CTOID: "330000865215643658",
-	token_max_age: 86400
+	token_max_age: 1209600
 };
 
 // CFX Links
